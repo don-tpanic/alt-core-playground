@@ -23,3 +23,8 @@ To learn about how to make contributions, kindly refer to the contribution docum
 ## Technical requirements
 * Packges
 * Compute (todo)
+
+## Communications
+* Discord
+* Website
+* Newsletter
