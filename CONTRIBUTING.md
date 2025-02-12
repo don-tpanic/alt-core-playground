@@ -18,6 +18,21 @@ In addition to the two teams, contributor activities can generally be grouped in
 - Deliverables: This stream produces code that is production-ready, ensuring that research outputs are efficiently translated into stable, functional systems.
 
 ## Contributing to the research stream:
+### Choose which tasks to work on
+Tasks are organised in terms of issues. 
+
+Issues with `[TOP] ...` in their titles ([example](https://github.com/don-tpanic/github-playground/issues/1)) are parent issues which state general directions of aspects of the project. To work on specific research stream tasks, look for sub-issues underneath with `[RES] ...` in their titles ([example](https://github.com/don-tpanic/github-playground/issues/3)).
+
+Do make sure you read the issue description carefully before start working on it! Ask clarification questions (commenting below the issue) is highly encouraged!
+
+### Make a contribution
+Make a pull request (PR) to make a contribution. 
+
+Depending on the exact task you are working on, the required outputs may vary. In general, we expect contributors to briefly explain what they have done in the PR to help us understand their contributions. Here is an example about contributing a new algorithm for creating alternative results ([example](https://github.com/don-tpanic/github-playground/pull/7)).
+
+A general PR template can be found [here](https://github.com/don-tpanic/github-playground/pull/7).
+
+### Code standard
 todo
 
 ## A note for contributors
