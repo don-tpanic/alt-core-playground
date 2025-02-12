@@ -60,6 +60,8 @@ async def process_paper(fname, txt_dir, outputs_dir, num_samples):
     paper_text = get_paper_text.load(fpath)
 
     outputs = {}
+    outputs["doi"] = fname.replace('.txt', '')
+    outputs["llm"] = llm
     outputs_fpath = os.path.join(outputs_dir, fname.replace('.txt', '.json'))
 
     if os.path.exists(outputs_fpath):
@@ -198,4 +200,5 @@ async def main():
 
 if __name__ == '__main__':
     num_samples = 10
+    llm = "gpt-4o-2024-08-06"
     asyncio.run(main())
