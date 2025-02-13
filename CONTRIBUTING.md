@@ -17,23 +17,29 @@ In addition to the two teams, contributor activities can generally be grouped in
 - Typical Tasks: Focus on improving code quality and efficiency, particularly when algorithms from the Research stream need to be implemented as part of a stable software release for end users.
 - Deliverables: This stream produces code that is production-ready, ensuring that research outputs are efficiently translated into stable, functional systems.
 
-## Contributing to the research stream:
-### Choose which tasks to work on
-Tasks are organised in terms of issues. 
+## Make a contribution
+### Find a task to work on
+The best place to start is taking a look at opening issues where we publish general directions and specific tasks. We categorize the types of issues following the classic "epic, feature and task" practice.
 
-Issues with `[TOP] ...` in their titles ([example](https://github.com/don-tpanic/github-playground/issues/1)) are parent issues which state general directions of aspects of the project. To work on specific research stream tasks, look for sub-issues underneath with `[RES] ...` in their titles ([example](https://github.com/don-tpanic/github-playground/issues/3)).
+**epic**: top-level issues stating a general direction and long-term objective.
+**feature**: major functional area, help organize related tasks (complete in weeks/months)
+**task**: specific, actionable work items (complete in days/weeks)
+
+An issue has title in the format of "[X, Y] Z". Where X \n {epic, feature, task} and Y \in {research, engineering}. And Z is a short description of the issue. 
+
+Issues of different types generally have content in different formats. See examples like [this](https://github.com/don-tpanic/github-playground/issues/1) and [this](https://github.com/don-tpanic/github-playground/issues/3). For generic issue templates, see `ISSUE_TEMPLATE/`.
 
 Do make sure you read the issue description carefully before start working on it! Ask clarification questions (commenting below the issue) is highly encouraged!
 
-### Make a contribution
-Make a pull request (PR) to make a contribution. 
+### Make a pull request (PR) 
+Make a pull request (PR) to submit your solution to a task.
 
 Depending on the exact task you are working on, the required outputs may vary. In general, we expect contributors to briefly explain what they have done in the PR to help us understand their contributions. Here is an example about contributing a new algorithm for creating alternative results ([example](https://github.com/don-tpanic/github-playground/pull/7)).
 
 A general PR template can be found [here](https://github.com/don-tpanic/github-playground/pull/7).
 
 ### Code standard
-todo
+TBD
 
 ## A note for contributors
 This project is inherently exploratory—roles and priorities may shift as we learn! Whether you’re drawn to algorithm design, neuroscience validation, or tool-building, there’s room to collaborate across teams. Early stages will emphasize research, but we’ll gradually transition polished components into engineering streams.
