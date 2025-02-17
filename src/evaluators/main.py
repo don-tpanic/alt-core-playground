@@ -55,7 +55,7 @@ def main():
             print(f"Error running module {uid}: {e}")
             return
 
-        output_path = f'papers/{doi}/eval_{uid}_{os.path.basename(gen_outputs_path)}.json'
+        output_path = f'papers/{doi}/eval_{uid}_{os.path.basename(gen_outputs_path)}'
         with open(output_path, 'w') as f:
             json.dump(outputs, f, indent=4)
             print(f"Successfully saved file {output_path}")

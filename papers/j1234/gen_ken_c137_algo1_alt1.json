@@ -1,3 +1,10 @@
 {
-    "results": "This is the original text of a paper."
+    "doi": "",
+    "llm": "",
+    "methods": "",
+    "results": "This is the original text of a paper.",
+    "knowledge_graph": "",
+    "knowledge_graph_permutations": {},
+    "results_permutations": {},
+    "num_permutations": 0
 }
