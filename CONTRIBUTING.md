@@ -14,6 +14,9 @@
   - [On-going tasks](#on-going-tasks)
   - [Codebase Walkthrough](#codebase-walkthrough)
   - [Code standard](#code-standard)
+- [Quickstart](#quickstart)
+  - [Setup a virtual environment](#setup-a-virtual-environment) 
+  - [Run through a minimal example](#run-through-a-minimal-example)
 - [A note for contributors](#a-note-for-contributors)
   
 # Contributor roles
@@ -120,6 +123,13 @@ Both `gen_*.json` and `eval_*.json` files are assigned unique identifiers that a
 Do make sure your code can be executed according to required procedure and the outputs produced by your code are formated, named and saved according to requirements (see corresponding task issues for details). 
 
 ## Code standard
+TODO
+
+# Quickstart
+## Setup a virtual environment
+TODO
+
+## Run through a minimal example
 TODO
 
 # A note for contributors
