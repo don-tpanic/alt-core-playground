@@ -49,6 +49,16 @@ Depending on the exact task you are working on, the required outputs may vary. I
 
 PR templates can be found in `PULL_REQUEST_TEMPLATE/`.
 
+## Contributing by roles
+### Team generator, working on algorithms
+Check out existing features and tasks (TODO) and PR templates (TODO).
+
+### Team evaluator, working on ground truths
+Check out existing features and tasks (TODO) and PR templates (TODO).
+
+### Team evaluator, working on automating evaluation procedures.
+Check out existing features and tasks (TODO) and PR templates (TODO).
+
 ## Code structure
 ```
 .
