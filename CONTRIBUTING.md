@@ -1,3 +1,21 @@
+# Contributor Guide
+
+## Table of Contents
+- [Contributor roles](#contributor-roles)
+  - [Two teams: Generator and Evaluator](#two-teams-generator-and-evaluator)
+  - [Two streams: Research and Engineering](#two-streams-research-and-engineering)
+    - [Research Stream](#research-stream)
+    - [Engineering Stream](#engineering-stream)
+- [Make a contribution](#make-a-contribution)
+  - [Find an existing task to work on](#find-an-existing-task-to-work-on)
+  - [Opening new epics, features or tasks](#opening-new-epics-features-or-tasks)
+  - [Opening new issues for all other purposes](#opening-new-issues-for-all-other-purposes)
+  - [Make a pull request (PR)](#make-a-pull-request-pr)
+  - [On-going tasks](#on-going-tasks)
+  - [Structure your code](#structure-your-code)
+  - [Code standard](#code-standard)
+- [A note for contributors](#a-note-for-contributors)
+  
 # Contributor roles
 As an exploratory and evolving project, we expect the structure of contributor roles to adapt over time. Below, we outline the key roles and areas of specialization to help contributors identify where they can best contribute. We also recognize that roles may overlap, and we encourage contributors to engage in one or more areas of the project as appropriate.
 
