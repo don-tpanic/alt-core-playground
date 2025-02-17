@@ -49,17 +49,14 @@ Depending on the exact task you are working on, the required outputs may vary. I
 
 PR templates can be found in `PULL_REQUEST_TEMPLATE/`.
 
-## Contributing by roles
-### Team generator, working on algorithms
-Check out existing features and tasks (TODO) and PR templates (TODO).
+## On-going tasks
+| Team      | Stream   | Task                                      | Issues | PR Template |
+|-----------|---------|-------------------------------------------|--------|-------------|
+| generator | research | develop new algos                        | #      | [Template](#) |
+| evaluator | research | develop ground truth labels             | #      | [Template](#) |
+| evaluator | research | develop automated evaluation pipelines  | #      | [Template](#) |
 
-### Team evaluator, working on ground truths
-Check out existing features and tasks (TODO) and PR templates (TODO).
-
-### Team evaluator, working on automating evaluation procedures.
-Check out existing features and tasks (TODO) and PR templates (TODO).
-
-## Code structure
+## Structure your code
 ```
 .
 ├── papers
@@ -77,11 +74,12 @@ Check out existing features and tasks (TODO) and PR templates (TODO).
         │   └── __init__.py
         └── main.py
 ```
-You should place your code directory under the correct folder depending on your team. Your code should be self-contained and placed under `src/generators/` or `src/evaluators/`. 
-* If you are team generators, make sure `python -m src.generators.main --doi <doi> --gen-uid <gen-uid>` produces outputs in the required format and saves outputs under `papers/<doi>/` with the correct naming requirements.
-* If you are team evaluators, make sure `python -m src.evaluators.main --doi <doi> --eval-uid <eval-uid> --gen-outputs-path <gen-outputs-path>` produces outputs in the required format and saves outputs under `paper/<doi>` with the correct naming requirements.
+Above is the general structure of this code base. Your code should be self-contained and placed under the right team, i.e., `src/generators/` or `src/evaluators/`. Do make sure your code can be executed according to required procedure and the outputs produced by your code are formated, named and saved according to requirements (see corresponding task issues for details). 
 
-Do take a look at the provided minimal examples in the respective directories.
+As an entry-point, 
+
+* For generator contributions, `python -m src.generators.main --doi <doi> --gen-uid <gen-uid>` should produce outputs in the required format and save outputs under `papers/<doi>/` with the correct naming requirements.
+* For evaluator contributions `python -m src.evaluators.main --doi <doi> --eval-uid <eval-uid> --gen-outputs-path <gen-outputs-path>` should produce outputs in the required format and saves outputs under `paper/<doi>` with the correct naming requirements.
 
 ## Code standard
 TODO
