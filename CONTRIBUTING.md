@@ -49,6 +49,30 @@ Depending on the exact task you are working on, the required outputs may vary. I
 
 PR templates can be found in `PULL_REQUEST_TEMPLATE/`.
 
+## Code structure
+```
+.
+├── papers
+│   └── <doi>
+│       ├── eval_<eval_uid>_<algo_id>_<alt_id>_<etc>.json
+│       ├── gen_<gen_uid>_<algo_id>_<alt_id>.json
+│       └── original_paper.txt
+└── src
+    ├── generators
+    │   ├── <gen_uid>
+    │   │   └── __init__.py
+    │   └── main.py
+    └── evaluators
+        ├── <eval_uid>
+        │   └── __init__.py
+        └── main.py
+```
+You should place your code directory under the correct folder depending on your team. Your code should be self-contained and placed under `src/generators/` or `src/evaluators/`. 
+* If you are team generators, make sure `python -m src.generators.main --doi <doi> --gen-uid <gen-uid>` produces outputs in the required format and saves outputs under `papers/<doi>/` with the correct naming requirements.
+* If you are team evaluators, make sure `python -m src.evaluators.main --doi <doi> --eval-uid <eval-uid> --gen-outputs-path <gen-outputs-path>` produces outputs in the required format and saves outputs under `paper/<doi>` with the correct naming requirements.
+
+Do take a look at the provided minimal examples in the respective directories.
+
 ## Code standard
 TODO
 
