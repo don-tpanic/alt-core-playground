@@ -12,7 +12,7 @@
   - [Opening new issues for all other purposes](#opening-new-issues-for-all-other-purposes)
   - [Make a pull request (PR)](#make-a-pull-request-pr)
   - [On-going tasks](#on-going-tasks)
-  - [Structure your code](#structure-your-code)
+  - [Codebase Walkthrough](#codebase-walkthrough)
   - [Code standard](#code-standard)
 - [A note for contributors](#a-note-for-contributors)
   
@@ -68,20 +68,22 @@ Depending on the exact task you are working on, the required outputs may vary. I
 PR templates can be found in `PULL_REQUEST_TEMPLATE/`.
 
 ## On-going tasks
-| Team      | Stream   | Task                                      | Issues | PR Template |
-|-----------|---------|-------------------------------------------|--------|-------------|
-| generator | research | develop new algos                        | #      | [Template](#) |
-| evaluator | research | develop ground truth labels             | #      | [Template](#) |
-| evaluator | research | develop automated evaluation pipelines  | #      | [Template](#) |
+| Team      | Stream   | Feature                                      | Tasks |
+|-----------|---------|-------------------------------------------|--------|
+| generator | research | develop new algos to create alternative results ([#2](https://github.com/don-tpanic/alt-core-playground/issues/2))                        | [#3](https://github.com/don-tpanic/alt-core-playground/issues/3), [#4](https://github.com/don-tpanic/alt-core-playground/issues/4)      |
+| evaluator | research | Validate generated results against ground truth, develop ground truth ([#5](https://github.com/don-tpanic/alt-core-playground/issues/5))             | [#11](https://github.com/don-tpanic/alt-core-playground/issues/11)      |
+| evaluator | research | develop automated evaluation pipelines  | [#5](https://github.com/don-tpanic/alt-core-playground/issues/5)      |
 
-## Structure your code
+## Codebase walkthrough
 ```
 .
 ├── papers
 │   └── <doi>
 │       ├── eval_<eval_uid>_<algo_id>_<alt_id>_<etc>.json
 │       ├── gen_<gen_uid>_<algo_id>_<alt_id>.json
-│       └── original_paper.txt
+│       ├── original_paper.txt
+│       └── ground_truths.json
+|       
 └── src
     ├── generators
     │   ├── <gen_uid>
@@ -92,12 +94,30 @@ PR templates can be found in `PULL_REQUEST_TEMPLATE/`.
         │   └── __init__.py
         └── main.py
 ```
-Above is the general structure of this code base. Your code should be self-contained and placed under the right team, i.e., `src/generators/` or `src/evaluators/`. Do make sure your code can be executed according to required procedure and the outputs produced by your code are formated, named and saved according to requirements (see corresponding task issues for details). 
+### [papers/](https://github.com/don-tpanic/alt-core-playground/tree/main/papers/)
+* `original_paper.txt`: the original paper content.
+* `ground_truths.json`: alternative results created manually by experts.
+* `gen_*.json`: generated content by running alternative results generation algorithms developed in `src/generators/`
+* `eval_*.json`: generated or manually created content which are evaluation results produced by algorithms in `src/evaluators/` or feedback provided manually by experts.
+Both `gen_*.json` and `eval_*.json` files are assigned unique identifiers that allow us to track down contributors, their teams, the version of their algorithms and the specific alternative results.
 
-As an entry-point, 
+### [src/generators/](https://github.com/don-tpanic/alt-core-playground/tree/main/src/generators)
+* `<gen_uid>`: A self-contained contributor directory where all code being developed to generate alternative results lives. Each contributor has its own directory with `uid` created by themselves.
+* `main.py`: Entry-point for running any contributor's solutions on given papers. For generator contributions,
+  ```
+  python -m src.generators.main --doi <doi> --gen-uid <gen-uid>
+  ```
+  should produce outputs in the required format and save outputs under `papers/<doi>/` with the correct naming requirements.
 
-* For generator contributions, `python -m src.generators.main --doi <doi> --gen-uid <gen-uid>` should produce outputs in the required format and save outputs under `papers/<doi>/` with the correct naming requirements.
-* For evaluator contributions `python -m src.evaluators.main --doi <doi> --eval-uid <eval-uid> --gen-outputs-path <gen-outputs-path>` should produce outputs in the required format and saves outputs under `paper/<doi>` with the correct naming requirements.
+### [src/evaluators/](https://github.com/don-tpanic/alt-core-playground/tree/main/src/evaluators)
+* `<eval_uid>`: A self-contained contributor directory where all code being developed to evaluate alternative results lives. Each contributor has its own directory with `uid` created by themselves.
+* `main.py`: Entry-point for running any contributor's solutions on given papers and their generated alternative results. For evaluator contributions,
+  ```
+  python -m src.evaluators.main --doi <doi> --eval-uid <eval-uid> --gen-outputs-path <gen-outputs-path>
+  ```
+  should produce outputs in the required format and saves outputs under `paper/<doi>/` with the correct naming requirements.
+
+Do make sure your code can be executed according to required procedure and the outputs produced by your code are formated, named and saved according to requirements (see corresponding task issues for details). 
 
 ## Code standard
 TODO
