@@ -16,9 +16,17 @@ To achieve this, our current idea is using large language models (LLMs) to extra
 ## Contributing
 This project is inherently exploratory—roles and priorities may shift as we learn! Whether you’re drawn to algorithm design, neuroscience validation, or tool-building, there’s room to collaborate across teams. Early stages will emphasize research, but we’ll gradually transition polished components into engineering streams. We appreciate all contributions. 
 
-In order to contribute, please first open an issue and discuss with us. Sending a PR without discussion might end up resulting in a rejected PR because we might be taking the core in a different direction than you might be aware of.
-
 To learn about how to make contributions, kindly refer to the contribution page [here](https://github.com/don-tpanic/alt-core-playground/blob/main/CONTRIBUTING.md).
+
+## Ongoing tasks overview
+Below is a list of tasks we’re working on and seeking contributors to help with. This provides an overview, but if you're considering contributing, please refer to the contribution page for detailed instructions.
+
+| Team      | Stream   | Feature                                      | Tasks |
+|-----------|---------|-------------------------------------------|--------|
+| generator | research | develop new algos to create alternative results ([#2](https://github.com/don-tpanic/alt-core-playground/issues/2))                        | [#3](https://github.com/don-tpanic/alt-core-playground/issues/3), [#4](https://github.com/don-tpanic/alt-core-playground/issues/4)      |
+| evaluator | research | Validate generated results against ground truth, develop ground truth ([#5](https://github.com/don-tpanic/alt-core-playground/issues/5))             | [#11](https://github.com/don-tpanic/alt-core-playground/issues/11)      |
+| evaluator | research | develop automated evaluation pipelines  | [#5](https://github.com/don-tpanic/alt-core-playground/issues/5)      |
+
 
 ## Communications
 * GitHub Issues: see [contribution page](https://github.com/don-tpanic/alt-core-playground/blob/main/CONTRIBUTING.md).
