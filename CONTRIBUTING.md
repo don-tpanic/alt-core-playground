@@ -25,14 +25,14 @@ As an exploratory and evolving project, we expect the structure of contributor r
 ## Two teams: Generator and Evaluator
 * Team-Generator: Experts in machine learning and LLMs to develop novel methods for generating experimental outcomes from neuroscience studies. The first task is to extract a KG from papers. A second, more demanding, task is to generate a set of alternative results.
 
-* Team-Evaluator: Neuroscience specialists to validate the feasibility and scientific accuracy of the generated outcomes. This team will develop a test set (akin to BrainBench) and supporting code to evaluate the Generators’ results.
+* Team-Evaluator: Neuroscience specialists to validate the feasibility and scientific accuracy of the generated outcomes. This team will develop a test set (akin to [BrainBench](https://huggingface.co/datasets/BrainGPT/BrainBench_Human_v0.1.csv)) and supporting code to evaluate the Generators’ results.
  
 ## Two streams: Research and Engineering
 In addition to the two teams, contributor activities can generally be grouped into two streams:
 
 ### Research Stream:
 - Typical Tasks: Develop novel algorithms, consult relevant literature for new ideas, or conduct exploratory studies.
-- Deliverables: These tasks typically result in self-contained directories (such as Jupyter notebooks) that address specific research problems or propose innovative solutions.
+- Deliverables: These tasks typically result in self-contained directories that address specific research problems or propose innovative solutions.
 
 ### Engineering Stream:
 - Typical Tasks: Focus on improving code quality and efficiency, particularly when algorithms from the Research stream need to be implemented as part of a stable software release for end users.
@@ -51,7 +51,7 @@ Each issue title follows the format: `[X, Y] Z` where:
 - `Y ∈ {research, engineering}`
 - `Z` is a short description of the issue.
 
-For example, [this](https://github.com/don-tpanic/github-playground/issues/1) is an epic and [this](https://github.com/don-tpanic/github-playground/issues/3) is a task. 
+For example, [this](https://github.com/don-tpanic/alt-core-playground/issues/1) is an epic and [this](https://github.com/don-tpanic/alt-core-playground/issues/3) is a task. 
 
 Do make sure you read the issue description carefully before start working on it! Ask clarification questions (commenting below the issue) is highly encouraged!
 
@@ -61,14 +61,14 @@ Most contributors won't need to create epics or features, though their input is 
 ## Opening new issues for all other purposes
 For bugs, questions, or issues related to existing code or materials, file them as you would in any GitHub repo. Whenever possible, create them under specific tasks (see example TODO).
 
-Issue templates can be found in `ISSUE_TEMPLATE/`.
+Issue templates can be found in `/github/ISSUE_TEMPLATE/`.
 
 ## Make a pull request (PR) 
-Make a pull request (PR) to submit your solution to a task.
+Make a pull request (PR) to submit your work addressing task.
 
-Depending on the exact task you are working on, the required outputs may vary. In general, we expect contributors to briefly explain what they have done in the PR to help us understand their contributions. Here is an example about contributing a new algorithm for creating alternative results ([example](https://github.com/don-tpanic/github-playground/pull/7)).
+Depending on the exact task you are working on, the required outputs may vary. In general, we expect contributors to briefly explain what they have done in the PR to help us understand their contributions. Here is an example about contributing a new algorithm for creating alternative results ([example](https://github.com/don-tpanic/alt-core-playground/pull/7)).
 
-PR templates can be found in `PULL_REQUEST_TEMPLATE/`.
+PR templates can be found in `/github/PULL_REQUEST_TEMPLATE/`.
 
 ## On-going tasks
 | Team      | Stream   | Feature                                      | Tasks |
@@ -139,7 +139,7 @@ TODO
 
 ## Run through a minimal end-to-end example 
 1. Read through [README.md](https://github.com/don-tpanic/alt-core-playground/blob/main/README.md) and [CONTRIBUTING.md](https://github.com/don-tpanic/alt-core-playground/blob/main/CONTRIBUTING.md) to get basic information.
-2. Decide to work on task [#3](https://github.com/don-tpanic/alt-core-playground/issues/3)
+2. Decide to work on task [#3](https://github.com/don-tpanic/alt-core-playground/issues/3) and understand the expected outputs and formating requirements.
 3. Fork the repo and create a local branch to work on the task.
 4. Create a self-contained contributor directory:
    ```
