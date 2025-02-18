@@ -16,7 +16,7 @@
   - [Code standard](#code-standard)
 - [Quickstart](#quickstart)
   - [Setup a virtual environment](#setup-a-virtual-environment) 
-  - [Run through a minimal example](#run-through-a-minimal-example)
+  - [Run through a minimal end-to-end example](#run-through-a-minimal-end-to-end-example)
 - [A note for contributors](#a-note-for-contributors)
   
 # Contributor roles
@@ -108,15 +108,23 @@ Both `gen_*.json` and `eval_*.json` files are assigned unique identifiers that a
 * `<gen_uid>`: A self-contained contributor directory where all code being developed to generate alternative results lives. Each contributor has its own directory with `uid` created by themselves.
 * `main.py`: Entry-point for running any contributor's solutions on given papers. For generator contributions,
   ```
-  python -m src.generators.main --doi <doi> --gen-uid <gen-uid>
+  python -m src.generators.main \
+    --doi <doi> \
+    --gen-uid <your-unique-team-generator-id> \
+    --algo-name <algo-name> \
+    --alt-index <unique-index-for-alternative-result>
   ```
   should produce outputs in the required format and save outputs under `papers/<doi>/` with the correct naming requirements.
+* See an end-to-end toy example below, under [quickstart](quickstart)
 
 ### [src/evaluators/](https://github.com/don-tpanic/alt-core-playground/tree/main/src/evaluators)
 * `<eval_uid>`: A self-contained contributor directory where all code being developed to evaluate alternative results lives. Each contributor has its own directory with `uid` created by themselves.
 * `main.py`: Entry-point for running any contributor's solutions on given papers and their generated alternative results. For evaluator contributions,
   ```
-  python -m src.evaluators.main --doi <doi> --eval-uid <eval-uid> --gen-outputs-path <gen-outputs-path>
+  python -m src.evaluators.main \
+    --doi <doi> \
+    --eval-uid <eval-uid> \
+    --gen-outputs-path <gen-outputs-path>
   ```
   should produce outputs in the required format and saves outputs under `paper/<doi>/` with the correct naming requirements.
 
@@ -129,8 +137,49 @@ TODO
 ## Setup a virtual environment
 TODO
 
-## Run through a minimal example
-TODO
+## Run through a minimal end-to-end example 
+1. Read through [README.md](https://github.com/don-tpanic/alt-core-playground/blob/main/README.md) and [CONTRIBUTING.md](https://github.com/don-tpanic/alt-core-playground/blob/main/CONTRIBUTING.md) to get basic information.
+2. Decide to work on task [#3](https://github.com/don-tpanic/alt-core-playground/issues/3)
+3. Fork the repo and create a local branch to work on the task.
+4. Create a self-contained contributor directory:
+   ```
+   cd src/generators
+   mkdir <your-unique-team-generator-id>
+   ```
+   e.g., `mkdir ken_c137` (which already exists)
+5. Choose a paper to work on from `papers/<doi>/`, e.g., `j1234`
+6. Develop your code and create `<your-unique-team-generator-id>/runner.py` with a `run()` function which will execute your code and returns formated outputs.
+   For example, if could look something like:
+   ```python
+   def run(paper_content):
 
+    # Import your core code here which runs some processing
+    # on the paper_content and produces required
+    # outputs. 
+    
+    outputs = {
+        "doi": "",
+        "llm": "",
+        "methods": "",
+        "results": paper_content,
+        "knowledge_graph": "",
+        "knowledge_graph_permutations": {},
+        "results_permutations": {},
+        "num_permutations": 0
+    }
+    return outputs
+   ```
+7. Execute your code to obtain and save results
+   ```
+   python -m src.generators.main \
+    --doi <doi> \
+    --gen-uid <your-unique-team-generator-id> \
+    --algo-name <algo-name> \
+    --alt-index <unique-index-for-alternative-result>
+   ```
+   e.g., `python -m src.generators.main --doi j1234 --gen-uid ken_c137 --algo-name algo1 --alt-index 1` (will execute the toy example).
+8. By executing the command above, you save your results in desired format at the right location, e.g., `papers/j1234/gen_ken_c137_algo1_alt1.json`
+9. Make a pull request (PR) to submit the work.
+   
 # A note for contributors
 This project is inherently exploratory—roles and priorities may shift as we learn! Whether you’re drawn to algorithm design, neuroscience validation, or tool-building, there’s room to collaborate across teams. Early stages will emphasize research, but we’ll gradually transition polished components into engineering streams.
