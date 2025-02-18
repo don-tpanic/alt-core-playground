@@ -1,0 +1,85 @@
+name: Task Request
+description: Create a task 
+title: "[task, research]: "
+labels: ["announcement"]
+# projects: ["project-org/1"]
+# assignees:
+#   - taskreviewer
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to create a task request
+  - type: textarea
+    id: task-description
+    attributes:
+      label: Task Description
+      description: Concisely describe the task.
+      placeholder: I'd like to create this task for the community to work on..because..
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation
+      description: How can the outputs of this task be validated?
+      placeholder: Explain validation methods...
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Data
+      description: Where is the original data located?
+      placeholder: Data location or access instructions...
+    validations:
+      required: true
+  - type: textarea
+    id: code-structure
+    attributes:
+      label: Code Structure and Execution
+      description: Explain how you would like the code directory structured and how to execute the code to obtain desired outputs.
+      placeholder: |
+        Code structure:
+        - Directory organization...
+        
+        Execution instructions:
+        - Steps to run the code...
+    validations:
+      required: true
+  - type: textarea
+    id: expected-outputs
+    attributes:
+      label: Expected Outputs
+      description: Explain the data structure of your outputs and where they should be saved.
+      placeholder: |
+        Output structure:
+        - Format details...
+        
+        Output location:
+        - Path where outputs can be found...
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit your code & outputs via a PR
+  - type: textarea
+    attributes:
+      label: PR template
+      description: Please provide a PR template you would like contributors to use when submitting their work.
+      placeholder: |
+        Please use the following PR template when submitting your solution:
+        
+        ```markdown
+        ```
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Task Creation Guidelines
+      description: By creating this task, you agree to follow our project guidelines.
+      options:
+        - label: I confirm the created task follows the project guidelines
+          required: true
