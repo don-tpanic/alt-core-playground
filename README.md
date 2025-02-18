@@ -18,13 +18,15 @@ This project is inherently exploratory—roles and priorities may shift as we le
 
 In order to contribute, please first open an issue and discuss with us. Sending a PR without discussion might end up resulting in a rejected PR because we might be taking the core in a different direction than you might be aware of.
 
-To learn about how to make contributions, kindly refer to the contribution document [here](https://github.com/don-tpanic/github-playground/blob/main/CONTRIBUTING.md).
-
-## Technical requirements
-* Packges
-* Compute (todo)
+To learn about how to make contributions, kindly refer to the contribution page [here](https://github.com/don-tpanic/alt-core-playground/blob/main/CONTRIBUTING.md).
 
 ## Communications
-* Discord
-* Website
-* Newsletter
+* GitHub Issues: see [contribution page](https://github.com/don-tpanic/alt-core-playground/blob/main/CONTRIBUTING.md).
+* Discord for daily communications, discussions: [![Discord](https://img.shields.io/discord/YOUR_SERVER_ID?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/gfSWCRQR6V)
+* Website for new releases: [![Website](https://img.shields.io/badge/Website-BrainGPT-blue?style=flat-square&logo=globe)](https://braingpt.org/)
+
+## The Team
+TODO
+
+## License and IP
+TODO
