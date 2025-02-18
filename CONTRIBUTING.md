@@ -114,8 +114,8 @@ Both `gen_*.json` and `eval_*.json` files are assigned unique identifiers that a
     --algo-name <algo-name> \
     --alt-index <unique-index-for-alternative-result>
   ```
-  should produce outputs in the required format and save outputs under `papers/<doi>/` with the correct naming requirements.
-* See an end-to-end toy example below, under [quickstart](quickstart)
+  * The above command should produce outputs in the required format and save outputs under `papers/<doi>/` with the correct naming requirements.
+  * See an end-to-end toy example below, under [quickstart](#quickstart)
 
 ### [src/evaluators/](https://github.com/don-tpanic/alt-core-playground/tree/main/src/evaluators)
 * `<eval_uid>`: A self-contained contributor directory where all code being developed to evaluate alternative results lives. Each contributor has its own directory with `uid` created by themselves.
@@ -126,7 +126,10 @@ Both `gen_*.json` and `eval_*.json` files are assigned unique identifiers that a
     --eval-uid <eval-uid> \
     --gen-outputs-path <gen-outputs-path>
   ```
-  should produce outputs in the required format and saves outputs under `paper/<doi>/` with the correct naming requirements.
+  * The above command should produce outputs in the required format and saves outputs under `paper/<doi>/` with the correct naming requirements.
+  * `<gen-outputs-path>` represent existing generated outputs produced by team-generator contributors. *
+  * Any existing outputs can be found in `paper/<doi>/gen_*.json` and you should replace `<gen-outputs-path>` with an actual `gen_*.json`. This way, each evaluation is uniquely 
+  coded by a generator contributor & evaluator contributor. 
 
 Do make sure your code can be executed according to required procedure and the outputs produced by your code are formated, named and saved according to requirements (see corresponding task issues for details). 
 
