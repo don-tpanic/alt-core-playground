@@ -19,7 +19,7 @@ jobs:
           python-version: '3.x'
 
       - name: Run Report Script and Update README
-        run: python src/report.py
+        run: python report.py
 
       - name: Commit and Push changes
         run: |
