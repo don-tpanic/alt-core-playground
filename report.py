@@ -1,6 +1,7 @@
 import os
 import re
 
+
 def generate_report():
     papers_dir = "papers"
     total_papers = 0
@@ -20,6 +21,7 @@ def generate_report():
 
     return total_papers, total_gen, total_eval
 
+
 def update_readme(total_papers, total_gen, total_eval):
     readme_path = "README.md"
     if not os.path.exists(readme_path):
@@ -30,13 +32,15 @@ def update_readme(total_papers, total_gen, total_eval):
     with open(readme_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # Create the updated stats block
+    # Create the updated stats block in a table format
     new_stats = (
-        f"<!-- START_STATS -->\n"
-        f"Total papers analyzed: {total_papers}\n"
-        f"Total alternatives generated: {total_gen}\n"
-        f"Total evaluations done: {total_eval}\n"
-        f"<!-- END_STATS -->"
+        "<!-- START_STATS -->\n"
+        "| Metric                          | Count |\n"
+        "|---------------------------------|-------|\n"
+        f"| Total papers analyzed           | {total_papers} |\n"
+        f"| Total alternatives generated    | {total_gen} |\n"
+        f"| Total evaluations done          | {total_eval} |\n"
+        "<!-- END_STATS -->"
     )
 
     # Use regex to replace content between markers
@@ -50,6 +54,7 @@ def update_readme(total_papers, total_gen, total_eval):
     with open(readme_path, "w", encoding="utf-8") as f:
         f.write(updated_content)
     print("README.md updated successfully!")
+
 
 if __name__ == "__main__":
     papers, gens, evals = generate_report()
