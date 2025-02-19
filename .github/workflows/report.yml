@@ -30,6 +30,6 @@ jobs:
           git add README.md
           git commit -m "Update stats in README [skip ci]" || echo "No changes to commit"
           # Set up remote with PAT authentication
-          git remote set-url origin https://don-tpanic:${PAT_TOKEN_ACTION_ACCESS}@github.com/don-tpanic/alt-core-playground.git
+          git remote set-url origin https://don-tpanic:${PAT_TOKEN}@github.com/don-tpanic/alt-core-playground.git
           git push
 
