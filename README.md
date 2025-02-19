@@ -1,9 +1,9 @@
 # AltCore: Core functionalities for creating and validating alternative results of experimental studies
 
 <!-- START_STATS -->
-Total papers analyzed: <!-- PAPER_COUNT -->
-Total alternatives generated: <!-- GEN_COUNT -->
-Total evaluations done: <!-- EVAL_COUNT -->
+Total papers analyzed: 1
+Total alternatives generated: 1
+Total evaluations done: 1
 <!-- END_STATS -->
 
 ## Premises and mission
