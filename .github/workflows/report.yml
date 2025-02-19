@@ -21,8 +21,15 @@ jobs:
       - name: Run Report Script and Update README
         run: python report.py
 
-      - name: Commit and Push changes
+      - name: Commit and Push Report
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN_ACTION_ACCESS }}
         run: |
+          git config --local user.name "don-tpanic"
+          git config --local user.email "ken.xiaoliang@gmail.com"
           git add README.md
           git commit -m "Update stats in README [skip ci]" || echo "No changes to commit"
+          # Set up remote with PAT authentication
+          git remote set-url origin https://don-tpanic:${PAT_TOKEN_ACTION_ACCESS}@github.com/don-tpanic/alt-core-playground.git
           git push
+
