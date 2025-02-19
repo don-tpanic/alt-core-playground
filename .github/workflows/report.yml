@@ -1,0 +1,20 @@
+name: Generate Report on Push
+
+on:
+  push:
+    branches: [ main ]  # or specify your default branch
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Run Report Script
+        run: python report.py
