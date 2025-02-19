@@ -3,6 +3,7 @@ name: Update README Stats
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:  # This allows manual triggering
   # schedule:
   #   - cron: '0 0 */2 * *'  # every 2 days, for example
 
@@ -34,4 +35,3 @@ jobs:
           # Set up remote with PAT authentication
           git remote set-url origin https://don-tpanic:${PAT_TOKEN}@github.com/don-tpanic/alt-core-playground.git
           git push
-
