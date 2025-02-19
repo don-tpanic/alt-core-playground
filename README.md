@@ -1,5 +1,11 @@
 # AltCore: Core functionalities for creating and validating alternative results of experimental studies
 
+<!-- START_STATS -->
+Total papers analyzed: <!-- PAPER_COUNT -->
+Total alternatives generated: <!-- GEN_COUNT -->
+Total evaluations done: <!-- EVAL_COUNT -->
+<!-- END_STATS -->
+
 ## Premises and mission
 The background of the current project is based on previously [published results](https://www.nature.com/articles/s41562-024-02046-9). Two key premises for us are:
 1. LLMs can extract key patterns from a noisy scientific literature, 
