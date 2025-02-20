@@ -33,7 +33,7 @@ include = '\.pyi?$'
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-src = ["src"]
+src = ["src", "."]
 extend-exclude = ["tests/*"]
 
 [tool.ruff.lint]

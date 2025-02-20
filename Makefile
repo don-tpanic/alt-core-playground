@@ -1,4 +1,4 @@
-.PHONY: lint lint-check test test-cov docs
+.PHONY: lint lint-check test test-cov
 
 # Format code and fix linting issues
 lint:
@@ -19,6 +19,3 @@ test:
 # Run tests with coverage report
 test-cov:
 	pytest --cov=src --cov-report=term-missing --cov-report=xml
-
-docs:
-	cd docs && make html
