@@ -1,21 +1,24 @@
+"""Main module for running evaluators."""
+
 import argparse
 import importlib
 import json
-import os
+from pathlib import Path
 
 
-def main():
+def main() -> None:
+    """Main function for running evaluators."""
     parser = argparse.ArgumentParser()
-    parser.add_argument('--doi', type=str, help='DOI of the paper')
-    parser.add_argument('--eval-uid', type=str, help='UID of the evaluator')
-    parser.add_argument('--gen-outputs-path', type=str, help='Path to the generator outputs')
+    parser.add_argument("--doi", type=str, help="DOI of the paper")
+    parser.add_argument("--eval-uid", type=str, help="UID of the evaluator")
+    parser.add_argument("--gen-outputs-path", type=str, help="Path to the generator outputs")
     args = parser.parse_args()
 
     if args.doi:
         doi = args.doi
-        paper_path = f'papers/{doi}/original_paper.txt'
-        if os.path.exists(paper_path):
-            with open(paper_path, 'r') as f:
+        paper_path = Path(f"papers/{doi}/original_paper.txt")
+        if paper_path.exists():
+            with paper_path.open() as f:
                 paper_content = f.read()
                 print(f"Successfully read file {paper_path}")
         else:
@@ -26,9 +29,9 @@ def main():
         return
 
     if args.gen_outputs_path:
-        gen_outputs_path = args.gen_outputs_path
-        if os.path.exists(gen_outputs_path):
-            with open(gen_outputs_path, 'r') as f:
+        gen_outputs_path = Path(args.gen_outputs_path)
+        if gen_outputs_path.exists():
+            with gen_outputs_path.open() as f:
                 gen_outputs_content = json.load(f)
                 print(f"Successfully read file {gen_outputs_path}")
         else:
@@ -55,13 +58,13 @@ def main():
             print(f"Error running module {uid}: {e}")
             return
 
-        output_path = f'papers/{doi}/eval_{uid}_{os.path.basename(gen_outputs_path)}'
-        with open(output_path, 'w') as f:
+        output_path = Path(f"papers/{doi}/eval_{uid}_{gen_outputs_path.name}")
+        with output_path.open("w") as f:
             json.dump(outputs, f, indent=4)
             print(f"Successfully saved file {output_path}")
     else:
         print("Please provide evaluator UID")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -1,9 +1,15 @@
-def run(paper_content):
+"""Runner for the Ken C137 generator."""
 
-    # Your core code which runs some algo
-    # on the paper_content and produces required
-    # outputs. 
-    
+
+def run(paper_content: str) -> dict:
+    """Run the generator.
+
+    Args:
+        paper_content: The content of the paper.
+
+    Returns:
+        A dictionary containing the outputs.
+    """
     outputs = {
         "doi": "",
         "llm": "",
@@ -12,6 +18,6 @@ def run(paper_content):
         "knowledge_graph": "",
         "knowledge_graph_permutations": {},
         "results_permutations": {},
-        "num_permutations": 0
+        "num_permutations": 0,
     }
     return outputs
