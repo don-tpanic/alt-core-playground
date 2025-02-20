@@ -1,1 +1,1 @@
-from .runner import run
+from .kg_pipeline import run

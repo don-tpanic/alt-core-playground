@@ -9,7 +9,8 @@ def main():
     parser.add_argument('--doi', type=str, required=True, help='DOI of the paper')
     parser.add_argument('--gen-uid', type=str, required=True, help='UID of the generator')
     parser.add_argument('--algo-name', type=str, required=True, help='Algorithm name')
-    parser.add_argument('--alt-index', type=int, required=True, help='Unique index of an alternative result')
+    parser.add_argument('--max-num-samples', type=int, default=10, help='Maximal number of samples of permutations to generate')
+    parser.add_argument('--llm', type=str, default='gpt-4o-2024-08-06', help='LLM to use for processing')
     parser.add_argument('--additional-config', type=str, default='', help='Optional additional config for running the algo')
     
     args = parser.parse_args()
@@ -17,7 +18,8 @@ def main():
     doi = args.doi
     uid = args.gen_uid
     algo_name = args.algo_name
-    alt_index = args.alt_index
+    max_num_samples = args.max_num_samples
+    llm = args.llm
     additional_config = args.additional_config
 
     paper_path = f'papers/{doi}/original_paper.txt'
@@ -37,13 +39,13 @@ def main():
         return
     
     try:
-        outputs = module.run(paper_content)
+        outputs = module.run(paper_content, max_num_samples, llm)
         print(f"Successfully ran module {uid}")
     except Exception as e:
         print(f"Error running module {uid}: {e}")
         return
     
-    output_filename = f'gen_{uid}_{algo_name}_alt{alt_index}'
+    output_filename = f'gen_{uid}_algo{algo_name}_{llm}'
     if additional_config:
         output_filename += f'_{additional_config}'
     output_filename += '.json'
