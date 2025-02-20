@@ -1,7 +1,7 @@
 """Test example."""
 
-import evaluators
-import generators
+import src.evaluators
+import src.generators
 
 
 def test_example() -> None:

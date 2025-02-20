@@ -108,7 +108,7 @@ Both `gen_*.json` and `eval_*.json` files are assigned unique identifiers that a
 * `<gen_uid>`: A self-contained contributor directory where all code being developed to generate alternative results lives. Each contributor has its own directory with `uid` created by themselves.
 * `main.py`: Entry-point for running any contributor's solutions on given papers. For generator contributions,
   ```
-  python -m src.generators.main \
+  python -m generators.main \
     --doi <doi> \
     --gen-uid <your-unique-team-generator-id> \
     --algo-name <algo-name> \
@@ -121,7 +121,7 @@ Both `gen_*.json` and `eval_*.json` files are assigned unique identifiers that a
 * `<eval_uid>`: A self-contained contributor directory where all code being developed to evaluate alternative results lives. Each contributor has its own directory with `uid` created by themselves.
 * `main.py`: Entry-point for running any contributor's solutions on given papers and their generated alternative results. For evaluator contributions,
   ```
-  python -m src.evaluators.main \
+  python -m evaluators.main \
     --doi <doi> \
     --eval-uid <eval-uid> \
     --gen-outputs-path <gen-outputs-path>

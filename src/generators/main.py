@@ -47,7 +47,7 @@ def main() -> None:
         print(f"Successfully read file {paper_path}")
 
     try:
-        module = importlib.import_module(f"src.generators.{uid}")
+        module = importlib.import_module(f"generators.{uid}")
         print(f"Successfully imported module {uid}")
     except ImportError as e:
         print(f"Module {uid} does not exist: {e}")

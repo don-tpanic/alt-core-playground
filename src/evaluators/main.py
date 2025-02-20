@@ -45,7 +45,7 @@ def main() -> None:
         uid = args.eval_uid
         try:
             # Import the module dynamically
-            module = importlib.import_module(f"src.evaluators.{uid}")
+            module = importlib.import_module(f"evaluators.{uid}")
             print(f"Successfully imported module {uid}")
         except ImportError as e:
             print(f"Module {uid} does not exist: {e}")
