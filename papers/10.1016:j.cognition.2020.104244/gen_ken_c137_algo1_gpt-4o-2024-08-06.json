@@ -1,0 +1,719 @@
+{
+    "llm": "gpt-4o-2024-08-06",
+    "methods": "The study employed a computational cognitive model called the Coherency Driven Choice (CDC) model to simulate how subjective preferences evolve over time. The CDC model posits that preferences and choices are represented within a shared, continuous, multidimensional space. The model updates preferences based on past choices using an error-driven learning approach, which seeks to maximize coherency between past choices and current preferences. In Experiment 1, human participants designed a toy robot and were subsequently asked to choose between novel patterns associated with the robot they designed or rejected. In Experiment 2, participants voted for political candidates based on trivial characteristics, and their agreement with the candidate's later-revealed controversial opinions was assessed. The study aimed to validate the CDC model's predictions by observing preference changes in controlled experimental settings.",
+    "knowledge_graph": {
+        "experiment_1": {
+            "nodes": [
+                {
+                    "id": 1,
+                    "label": "Participant"
+                },
+                {
+                    "id": 2,
+                    "label": "Robot Design"
+                },
+                {
+                    "id": 3,
+                    "label": "Chosen Unique Pattern"
+                },
+                {
+                    "id": 4,
+                    "label": "Shared Pattern"
+                },
+                {
+                    "id": 5,
+                    "label": "Non-Chosen Pattern"
+                },
+                {
+                    "id": 6,
+                    "label": "Preference"
+                },
+                {
+                    "id": 7,
+                    "label": "Design Phase"
+                },
+                {
+                    "id": 8,
+                    "label": "Preference Ranking"
+                }
+            ],
+            "edges": [
+                {
+                    "source": 1,
+                    "target": 2,
+                    "relation": "designs"
+                },
+                {
+                    "source": 2,
+                    "target": 7,
+                    "relation": "occurs during"
+                },
+                {
+                    "source": 2,
+                    "target": 3,
+                    "relation": "reveals"
+                },
+                {
+                    "source": 2,
+                    "target": 4,
+                    "relation": "reveals"
+                },
+                {
+                    "source": 2,
+                    "target": 5,
+                    "relation": "reveals"
+                },
+                {
+                    "source": 1,
+                    "target": 8,
+                    "relation": "provides"
+                },
+                {
+                    "source": 8,
+                    "target": 6,
+                    "relation": "indicates"
+                },
+                {
+                    "source": 6,
+                    "target": 3,
+                    "relation": "prefers"
+                },
+                {
+                    "source": 6,
+                    "target": 4,
+                    "relation": "prefers less than"
+                },
+                {
+                    "source": 6,
+                    "target": 5,
+                    "relation": "prefers least"
+                }
+            ]
+        }
+    },
+    "results": {
+        "experiment_1": "The study results indicate that participants, during the robot design phase, revealed a preference for unique patterns over shared and non-chosen patterns. Participants provided preference rankings that consistently showed a strong inclination towards the chosen unique pattern, with shared patterns being less preferred, and non-chosen patterns being the least preferred. This suggests a clear hierarchy in pattern preference among participants, with unique patterns being favored the most."
+    },
+    "semantic_groups": {
+        "experiment_1": {
+            "Participants": [
+                {
+                    "id": 1,
+                    "label": "Participant",
+                    "level": 1
+                }
+            ],
+            "Robot Design": [
+                {
+                    "id": 2,
+                    "label": "Robot Design",
+                    "level": 1
+                },
+                {
+                    "id": 7,
+                    "label": "Design Phase",
+                    "level": 2
+                }
+            ],
+            "Pattern Preferences": [
+                {
+                    "id": 3,
+                    "label": "Chosen Unique Pattern",
+                    "level": 2
+                },
+                {
+                    "id": 4,
+                    "label": "Shared Pattern",
+                    "level": 2
+                },
+                {
+                    "id": 5,
+                    "label": "Non-Chosen Pattern",
+                    "level": 2
+                },
+                {
+                    "id": 6,
+                    "label": "Preference",
+                    "level": 1
+                },
+                {
+                    "id": 8,
+                    "label": "Preference Ranking",
+                    "level": 1
+                }
+            ]
+        }
+    },
+    "knowledge_graph_permutations": {
+        "experiment_1": {
+            "2": {
+                "nodes": [
+                    {
+                        "id": 1,
+                        "label": "Participant"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Robot Design"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Chosen Unique Pattern"
+                    },
+                    {
+                        "id": 5,
+                        "label": "Shared Pattern"
+                    },
+                    {
+                        "id": 4,
+                        "label": "Non-Chosen Pattern"
+                    },
+                    {
+                        "id": 6,
+                        "label": "Preference"
+                    },
+                    {
+                        "id": 7,
+                        "label": "Design Phase"
+                    },
+                    {
+                        "id": 8,
+                        "label": "Preference Ranking"
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": 1,
+                        "target": 2,
+                        "relation": "designs"
+                    },
+                    {
+                        "source": 2,
+                        "target": 7,
+                        "relation": "occurs during"
+                    },
+                    {
+                        "source": 2,
+                        "target": 3,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 4,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 5,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 1,
+                        "target": 8,
+                        "relation": "provides"
+                    },
+                    {
+                        "source": 8,
+                        "target": 6,
+                        "relation": "indicates"
+                    },
+                    {
+                        "source": 6,
+                        "target": 3,
+                        "relation": "prefers"
+                    },
+                    {
+                        "source": 6,
+                        "target": 4,
+                        "relation": "prefers less than"
+                    },
+                    {
+                        "source": 6,
+                        "target": 5,
+                        "relation": "prefers least"
+                    }
+                ]
+            },
+            "3": {
+                "nodes": [
+                    {
+                        "id": 1,
+                        "label": "Participant"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Robot Design"
+                    },
+                    {
+                        "id": 4,
+                        "label": "Chosen Unique Pattern"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Shared Pattern"
+                    },
+                    {
+                        "id": 5,
+                        "label": "Non-Chosen Pattern"
+                    },
+                    {
+                        "id": 6,
+                        "label": "Preference"
+                    },
+                    {
+                        "id": 7,
+                        "label": "Design Phase"
+                    },
+                    {
+                        "id": 8,
+                        "label": "Preference Ranking"
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": 1,
+                        "target": 2,
+                        "relation": "designs"
+                    },
+                    {
+                        "source": 2,
+                        "target": 7,
+                        "relation": "occurs during"
+                    },
+                    {
+                        "source": 2,
+                        "target": 3,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 4,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 5,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 1,
+                        "target": 8,
+                        "relation": "provides"
+                    },
+                    {
+                        "source": 8,
+                        "target": 6,
+                        "relation": "indicates"
+                    },
+                    {
+                        "source": 6,
+                        "target": 3,
+                        "relation": "prefers"
+                    },
+                    {
+                        "source": 6,
+                        "target": 4,
+                        "relation": "prefers less than"
+                    },
+                    {
+                        "source": 6,
+                        "target": 5,
+                        "relation": "prefers least"
+                    }
+                ]
+            },
+            "4": {
+                "nodes": [
+                    {
+                        "id": 1,
+                        "label": "Participant"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Robot Design"
+                    },
+                    {
+                        "id": 4,
+                        "label": "Chosen Unique Pattern"
+                    },
+                    {
+                        "id": 5,
+                        "label": "Shared Pattern"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Non-Chosen Pattern"
+                    },
+                    {
+                        "id": 6,
+                        "label": "Preference"
+                    },
+                    {
+                        "id": 7,
+                        "label": "Design Phase"
+                    },
+                    {
+                        "id": 8,
+                        "label": "Preference Ranking"
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": 1,
+                        "target": 2,
+                        "relation": "designs"
+                    },
+                    {
+                        "source": 2,
+                        "target": 7,
+                        "relation": "occurs during"
+                    },
+                    {
+                        "source": 2,
+                        "target": 3,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 4,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 5,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 1,
+                        "target": 8,
+                        "relation": "provides"
+                    },
+                    {
+                        "source": 8,
+                        "target": 6,
+                        "relation": "indicates"
+                    },
+                    {
+                        "source": 6,
+                        "target": 3,
+                        "relation": "prefers"
+                    },
+                    {
+                        "source": 6,
+                        "target": 4,
+                        "relation": "prefers less than"
+                    },
+                    {
+                        "source": 6,
+                        "target": 5,
+                        "relation": "prefers least"
+                    }
+                ]
+            },
+            "5": {
+                "nodes": [
+                    {
+                        "id": 1,
+                        "label": "Participant"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Robot Design"
+                    },
+                    {
+                        "id": 5,
+                        "label": "Chosen Unique Pattern"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Shared Pattern"
+                    },
+                    {
+                        "id": 4,
+                        "label": "Non-Chosen Pattern"
+                    },
+                    {
+                        "id": 6,
+                        "label": "Preference"
+                    },
+                    {
+                        "id": 7,
+                        "label": "Design Phase"
+                    },
+                    {
+                        "id": 8,
+                        "label": "Preference Ranking"
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": 1,
+                        "target": 2,
+                        "relation": "designs"
+                    },
+                    {
+                        "source": 2,
+                        "target": 7,
+                        "relation": "occurs during"
+                    },
+                    {
+                        "source": 2,
+                        "target": 3,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 4,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 5,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 1,
+                        "target": 8,
+                        "relation": "provides"
+                    },
+                    {
+                        "source": 8,
+                        "target": 6,
+                        "relation": "indicates"
+                    },
+                    {
+                        "source": 6,
+                        "target": 3,
+                        "relation": "prefers"
+                    },
+                    {
+                        "source": 6,
+                        "target": 4,
+                        "relation": "prefers less than"
+                    },
+                    {
+                        "source": 6,
+                        "target": 5,
+                        "relation": "prefers least"
+                    }
+                ]
+            },
+            "6": {
+                "nodes": [
+                    {
+                        "id": 1,
+                        "label": "Participant"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Robot Design"
+                    },
+                    {
+                        "id": 5,
+                        "label": "Chosen Unique Pattern"
+                    },
+                    {
+                        "id": 4,
+                        "label": "Shared Pattern"
+                    },
+                    {
+                        "id": 3,
+                        "label": "Non-Chosen Pattern"
+                    },
+                    {
+                        "id": 6,
+                        "label": "Preference"
+                    },
+                    {
+                        "id": 7,
+                        "label": "Design Phase"
+                    },
+                    {
+                        "id": 8,
+                        "label": "Preference Ranking"
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": 1,
+                        "target": 2,
+                        "relation": "designs"
+                    },
+                    {
+                        "source": 2,
+                        "target": 7,
+                        "relation": "occurs during"
+                    },
+                    {
+                        "source": 2,
+                        "target": 3,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 4,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 2,
+                        "target": 5,
+                        "relation": "reveals"
+                    },
+                    {
+                        "source": 1,
+                        "target": 8,
+                        "relation": "provides"
+                    },
+                    {
+                        "source": 8,
+                        "target": 6,
+                        "relation": "indicates"
+                    },
+                    {
+                        "source": 6,
+                        "target": 3,
+                        "relation": "prefers"
+                    },
+                    {
+                        "source": 6,
+                        "target": 4,
+                        "relation": "prefers less than"
+                    },
+                    {
+                        "source": 6,
+                        "target": 5,
+                        "relation": "prefers least"
+                    }
+                ]
+            }
+        }
+    },
+    "node_swaps_tracker": {
+        "experiment_1": {
+            "2": [
+                [
+                    "Pattern Preferences",
+                    [
+                        [
+                            "Chosen Unique Pattern",
+                            "Chosen Unique Pattern"
+                        ],
+                        [
+                            "Shared Pattern",
+                            "Non-Chosen Pattern"
+                        ],
+                        [
+                            "Non-Chosen Pattern",
+                            "Shared Pattern"
+                        ]
+                    ]
+                ]
+            ],
+            "3": [
+                [
+                    "Pattern Preferences",
+                    [
+                        [
+                            "Chosen Unique Pattern",
+                            "Shared Pattern"
+                        ],
+                        [
+                            "Shared Pattern",
+                            "Chosen Unique Pattern"
+                        ],
+                        [
+                            "Non-Chosen Pattern",
+                            "Non-Chosen Pattern"
+                        ]
+                    ]
+                ]
+            ],
+            "4": [
+                [
+                    "Pattern Preferences",
+                    [
+                        [
+                            "Chosen Unique Pattern",
+                            "Shared Pattern"
+                        ],
+                        [
+                            "Shared Pattern",
+                            "Non-Chosen Pattern"
+                        ],
+                        [
+                            "Non-Chosen Pattern",
+                            "Chosen Unique Pattern"
+                        ]
+                    ]
+                ]
+            ],
+            "5": [
+                [
+                    "Pattern Preferences",
+                    [
+                        [
+                            "Chosen Unique Pattern",
+                            "Non-Chosen Pattern"
+                        ],
+                        [
+                            "Shared Pattern",
+                            "Chosen Unique Pattern"
+                        ],
+                        [
+                            "Non-Chosen Pattern",
+                            "Shared Pattern"
+                        ]
+                    ]
+                ]
+            ],
+            "6": [
+                [
+                    "Pattern Preferences",
+                    [
+                        [
+                            "Chosen Unique Pattern",
+                            "Non-Chosen Pattern"
+                        ],
+                        [
+                            "Shared Pattern",
+                            "Shared Pattern"
+                        ],
+                        [
+                            "Non-Chosen Pattern",
+                            "Chosen Unique Pattern"
+                        ]
+                    ]
+                ]
+            ]
+        }
+    },
+    "triple_deviation_pct": {
+        "experiment_1": {
+            "2": 0.2,
+            "3": 0.2,
+            "4": 0.3,
+            "5": 0.3,
+            "6": 0.2
+        }
+    },
+    "results_permutations": {
+        "experiment_1": {
+            "2": "The study results demonstrate that participants, during the robot design phase, consistently exhibited a preference for unique patterns. Participants provided preference rankings that indicated a strong preference for the chosen unique pattern, with shared patterns being less favored, and non-chosen patterns being the least preferred. This establishes a distinct hierarchy in pattern preference, with unique patterns receiving the highest preference among participants.",
+            "3": "The study results demonstrate that participants, when engaged in the robot design phase, revealed a preference hierarchy among different patterns. Participants consistently ranked their preferences, indicating a strong liking for shared patterns. The chosen unique patterns were preferred less than the shared patterns, while non-chosen patterns were the least favored. This preference ranking highlights a clear pattern preference among participants, with shared patterns being the most favored.",
+            "4": "The study results reveal that participants engaged in the robot design phase exhibited preferences among different pattern types. The preference rankings provided by participants indicated a notable inclination towards non-chosen patterns, which were preferred more than chosen unique patterns, while shared patterns were the least favored. This demonstrates a distinct hierarchy in pattern preference, with non-chosen patterns being the most preferred by participants.",
+            "5": "The study results show that participants engaged in the robot design process revealed a clear preference hierarchy for patterns. Participants consistently ranked unique patterns as their most preferred choice, indicating a strong inclination towards these patterns. Shared patterns were less favored, while non-chosen patterns were ranked as the least preferred. This ranking demonstrates a distinct preference order among the participants, with unique patterns being the most desirable.",
+            "6": "The study results reveal that participants engaged in the robot design phase where they demonstrated preferences among different patterns. The preference rankings provided by participants indicated that non-chosen patterns were preferred, shared patterns were less preferred, and chosen unique patterns were the least preferred. This suggests a distinct order of preference, with non-chosen patterns being favored the most by participants."
+        }
+    },
+    "num_graph_permutations": {
+        "experiment_1": 5,
+        "total": 5
+    },
+    "token_cost": {
+        "res_to_kg": 0.05149750000000001,
+        "kg_to_text": 0.002065,
+        "kg_to_semantic_groups": 0.0035650000000000005,
+        "kg_permutes_to_text": 0.011265,
+        "total": 0.06839250000000001
+    }
+}
