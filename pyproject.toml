@@ -5,6 +5,7 @@ requires-python = ">=3.11"
 dependencies = [
     "litellm==1.61.11",
     "python-dotenv==1.0.1",
+    "numpy==2.2.3",
 ]
 
 [project.optional-dependencies]

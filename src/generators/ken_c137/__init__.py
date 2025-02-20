@@ -1,5 +1,5 @@
 """Ken C137 generator."""
 
-from .runner import run as run
+from .kg_pipeline import run
 
 __all__ = ["run"]
