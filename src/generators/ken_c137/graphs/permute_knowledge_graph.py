@@ -1,23 +1,41 @@
-import json
+"""Knowledge graph permutations."""
+
 import copy
-from itertools import permutations, combinations, chain, product
+import json
+from itertools import chain, combinations, permutations, product
+from pathlib import Path
 
 
-def load_json(file_path):
-    with open(file_path, 'r') as file:
+def load_json(file_path: str) -> dict:
+    """Load a JSON file.
+
+    Args:
+        file_path: The path to the JSON file.
+
+    Returns:
+        The JSON data.
+    """
+    with Path(file_path).open() as file:
         return json.load(file)
 
 
-def save_json(data, file_path):
-    with open(file_path, 'w') as file:
+def save_json(data: dict, file_path: str) -> None:
+    """Save a JSON file.
+
+    Args:
+        data: The data to save.
+        file_path: The path to the JSON file.
+    """
+    with Path(file_path).open("w") as file:
         json.dump(data, file, indent=2)
 
 
-def get_swappable_nodes(semantic_groups):
-    """
+def get_swappable_nodes(semantic_groups: dict) -> dict:
+    """Get the swappable nodes for each semantic group.
+
     Args:
         semantic_groups: dict (key: group_name, value: list of nodes)
-            e.g., 
+            e.g.,
             {
                 "group_name_1": [
                     {
@@ -49,10 +67,10 @@ def get_swappable_nodes(semantic_groups):
                     }
                 ]
             }
-    
+
     Returns:
         swappable_nodes: dict (key: group_name, value: tuple of node ids)
-            e.g., 
+            e.g.,
             {
                 "group_name_1": (2, 3),
                 "group_name_2": (4, 5)
@@ -60,25 +78,45 @@ def get_swappable_nodes(semantic_groups):
     """
     swappable_nodes = {}
     for group_name, group in semantic_groups.items():
-        max_level = max(node['level'] for node in group)
-        swappable_nodes[group_name] = tuple([node['id'] for node in group if node['level'] == max_level])
+        max_level = max(node["level"] for node in group)
+        swappable_nodes[group_name] = tuple(
+            [node["id"] for node in group if node["level"] == max_level]
+        )
     return swappable_nodes
 
 
-def apply_permutation(graph, old_order, new_order):
+def apply_permutation(graph: dict, old_order: tuple, new_order: tuple) -> dict:
+    """Apply a permutation to a graph.
+
+    Args:
+        graph: The graph to apply the permutation to.
+        old_order: The old order of the nodes.
+        new_order: The new order of the nodes.
+
+    Returns:
+        The permuted graph.
+    """
     new_graph = copy.deepcopy(graph)
     id_mapping = {}
-    for old, new in zip(old_order, new_order):
+    for old, new in zip(old_order, new_order, strict=False):
         id_mapping[old] = new
-    
-    for node in new_graph['nodes']:
-        if node['id'] in id_mapping:
-            node['id'] = id_mapping[node['id']]
+
+    for node in new_graph["nodes"]:
+        if node["id"] in id_mapping:
+            node["id"] = id_mapping[node["id"]]
     return new_graph
 
 
-def get_graph_triples(graph):
-    id_to_label = {node['id']: node['label'] for node in graph['nodes']}
+def get_graph_triples(graph: dict) -> list[tuple[str, str, str]]:
+    """Get the triples of a graph.
+
+    Args:
+        graph: The graph to get the triples of.
+
+    Returns:
+        The triples of the graph.
+    """
+    id_to_label = {node["id"]: node["label"] for node in graph["nodes"]}
 
     source_relation_target = []
     for edge in graph["edges"]:
@@ -86,14 +124,23 @@ def get_graph_triples(graph):
         target_id = edge["target"]
         relation = edge["relation"]
         source_relation_target.append((id_to_label[source_id], relation, id_to_label[target_id]))
-    
+
     # Sort triples to ensure order doesn't affect comparison
     return sorted(source_relation_target)
 
 
-def is_unique_permutation(new_graph, existing_graphs):
+def is_unique_permutation(new_graph: dict, existing_graphs: list[dict]) -> bool:
+    """Check if a new graph is unique.
+
+    Args:
+        new_graph: The new graph.
+        existing_graphs: The existing graphs.
+
+    Returns:
+        True if the new graph is unique, False otherwise.
+    """
     new_triples = get_graph_triples(new_graph)
-    for i, existing_graph in enumerate(existing_graphs):
+    for _i, existing_graph in enumerate(existing_graphs):
         existing_triples = get_graph_triples(existing_graph)
         # print(f"new_triples: {new_triples}")
         # print(f"existing_triple {i}: {existing_triples}")
@@ -104,13 +151,22 @@ def is_unique_permutation(new_graph, existing_graphs):
     return True
 
 
-def graph_deviation_from_original(new_graph, original_graph):
+def graph_deviation_from_original(new_graph: dict, original_graph: dict) -> float:
+    """Get the deviation of a new graph from the original graph.
+
+    Args:
+        new_graph: The new graph.
+        original_graph: The original graph.
+
+    Returns:
+        The deviation of the new graph from the original graph.
+    """
     new_graph_triples = get_graph_triples(new_graph)
     original_graph_triples = get_graph_triples(original_graph)
-    original_graph_triples_dict = {}
+    original_graph_triples_dict: dict[tuple[str, str, str], int] = {}
     for triple in original_graph_triples:
         original_graph_triples_dict[triple] = original_graph_triples_dict.get(triple, 0) + 1
-    
+
     deviation_count = 0
     total_triples = len(new_graph_triples)
     assert total_triples == len(original_graph_triples)
@@ -119,13 +175,14 @@ def graph_deviation_from_original(new_graph, original_graph):
             deviation_count += 1
         else:
             continue
-    
+
     deviation_pct = deviation_count / total_triples
     return deviation_pct
-    
 
-def create_permutations(knowledge_graph, semantic_groups):
-    """
+
+def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[dict, dict, dict]:
+    """Create permutations of a knowledge graph.
+
     Basic idea:
 
     For each experiment's kg:
@@ -135,45 +192,55 @@ def create_permutations(knowledge_graph, semantic_groups):
         for each combo of groups:  # leads to multiple new graphs
             3. Get all possible permutations of swaps for each group
             4. Generate all combinations of swaps across groups
-            
+
             for each swap permutation:  # leads to a new graph (1 permutation from each group)
                 5. Swap the nodes in the graph
+
+    Args:
+        knowledge_graph: The knowledge graph to permute.
+        semantic_groups: The semantic groups of the knowledge graph.
+
+    Returns:
+        The permutations of the knowledge graph.
     """
     num_experiments = len(knowledge_graph)
     knowledge_graph_permutations = {}
     node_swaps_tracker = {}
     triple_deviation_pct = {}
-    
-    for experiment_i in range(1, num_experiments+1):
-        knowledge_graph_i = knowledge_graph[f'experiment_{experiment_i}']
-        semantic_group_i = semantic_groups[f'experiment_{experiment_i}']
-    
+
+    for experiment_i in range(1, num_experiments + 1):
+        knowledge_graph_i = knowledge_graph[f"experiment_{experiment_i}"]
+        semantic_group_i = semantic_groups[f"experiment_{experiment_i}"]
+
         swappable_nodes = get_swappable_nodes(semantic_group_i)
         permutations_i = {1: knowledge_graph_i}  # Include original graph
         total_permutation_count_i = len(permutations_i)
         unique_permutation_count_i = len(permutations_i)
-        node_swaps_tracker_i = {}   # For each permutation, track pairs of nodes (labels) swapped for post-analysis.
-        triple_deviation_pct_i = {} # For each permutation, track % of deviating triples to original
-        
+        # For each permutation, track pairs of nodes (labels) swapped for post-analysis.
+        node_swaps_tracker_i = {}
+        # For each permutation, track % of deviating triples to original
+        triple_deviation_pct_i = {}
+
         # Filter out groups with only one node
         valid_groups = {group: nodes for group, nodes in swappable_nodes.items() if len(nodes) > 1}
-        
+
         # Generate all possible combinations of semantic groups
-        group_combinations = list(chain.from_iterable(
-            combinations(valid_groups.keys(), r) 
-            for r in range(1, len(valid_groups) + 1)
-        ))
-        
+        group_combinations = list(
+            chain.from_iterable(
+                combinations(valid_groups.keys(), r) for r in range(1, len(valid_groups) + 1)
+            )
+        )
+
         print(f"Num. unique groups: {len(valid_groups)}")
         print(f"Num. group combinations: {len(group_combinations)}")
-        
+
         for group_combo in group_combinations:
-            print(f"\nProcessing group combination: {group_combo}")  
+            print(f"\nProcessing group combination: {group_combo}")
             # e.g., ('group_name_1', 'group_name_2')
-            
+
             # Generate all possible swaps for each group
             # List of lists, where each sublist contains all possible swaps for a group
-            group_swaps = [] 
+            group_swaps = []
             for group_name in group_combo:
                 nodes = valid_groups[group_name]
                 group_swaps.append(list(permutations(nodes)))
@@ -187,41 +254,53 @@ def create_permutations(knowledge_graph, semantic_groups):
 
                 # Each perm_combo leads to a ***new graph***
                 new_graph = copy.deepcopy(knowledge_graph_i)
-                for group_name, perm in zip(group_combo, perm_combo):
+                for group_name, perm in zip(group_combo, perm_combo, strict=False):
                     old_order = valid_groups[group_name]
                     new_graph = apply_permutation(new_graph, old_order, perm)
-                    print(f"   group_name: {group_name}")   # e.g., group_name_1; (str)
-                    print(f"   old_order: {old_order}")     # e.g., (2, 3); (tuple)
-                    print(f"   new_order: {perm}")          # e.g., (3, 2); (tuple)
+                    print(f"   group_name: {group_name}")  # e.g., group_name_1; (str)
+                    print(f"   old_order: {old_order}")  # e.g., (2, 3); (tuple)
+                    print(f"   new_order: {perm}")  # e.g., (3, 2); (tuple)
 
                 # Check if the new graph is unique
-                if is_unique_permutation(new_graph, permutations_i.values()):
+                if is_unique_permutation(new_graph, list(permutations_i.values())):
                     unique_permutation_count_i += 1
                     permutations_i[unique_permutation_count_i] = new_graph
-                    
+
                     permuted_nodes = []
-                    for group_name, perm in zip(group_combo, perm_combo):
+                    for group_name, perm in zip(group_combo, perm_combo, strict=False):
                         old_order = valid_groups[group_name]
                         group_permutation = []
-                        for old_id, new_id in zip(old_order, perm):
-                            old_label = [node['label'] for node in knowledge_graph_i['nodes'] if node['id'] == old_id][0]
-                            new_label = [node['label'] for node in knowledge_graph_i['nodes'] if node['id'] == new_id][0]
+                        for old_id, new_id in zip(old_order, perm, strict=False):
+                            old_label = [
+                                node["label"]
+                                for node in knowledge_graph_i["nodes"]
+                                if node["id"] == old_id
+                            ][0]
+                            new_label = [
+                                node["label"]
+                                for node in knowledge_graph_i["nodes"]
+                                if node["id"] == new_id
+                            ][0]
                             group_permutation.append((old_label, new_label))
                         permuted_nodes.append((group_name, group_permutation))
-                    
+
                     # Track the nodes permuted for post-analysis
                     node_swaps_tracker_i[unique_permutation_count_i] = permuted_nodes
 
                     # Track % of deviating triples to original
-                    triple_deviation_pct_i[unique_permutation_count_i] \
-                        = graph_deviation_from_original(new_graph, knowledge_graph_i)
-                
+                    triple_deviation_pct_i[unique_permutation_count_i] = (
+                        graph_deviation_from_original(new_graph, knowledge_graph_i)
+                    )
+
                 total_permutation_count_i += 1
 
-        print(f"Exp. {experiment_i}: Total permutations: {total_permutation_count_i}, Unique permutations: {unique_permutation_count_i}")
+        print(
+            f"Exp. {experiment_i}: Total permutations: {total_permutation_count_i}, "
+            f"Unique permutations: {unique_permutation_count_i}"
+        )
         del permutations_i[1]  # Remove original graph
-        knowledge_graph_permutations[f'experiment_{experiment_i}'] = permutations_i
-        node_swaps_tracker[f'experiment_{experiment_i}'] = node_swaps_tracker_i
-        triple_deviation_pct[f'experiment_{experiment_i}'] = triple_deviation_pct_i
+        knowledge_graph_permutations[f"experiment_{experiment_i}"] = permutations_i
+        node_swaps_tracker[f"experiment_{experiment_i}"] = node_swaps_tracker_i
+        triple_deviation_pct[f"experiment_{experiment_i}"] = triple_deviation_pct_i
 
     return knowledge_graph_permutations, node_swaps_tracker, triple_deviation_pct
