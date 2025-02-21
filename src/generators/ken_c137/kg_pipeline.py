@@ -5,7 +5,7 @@ from typing import Any
 
 import numpy as np
 
-from .api_call import ask_gpt4, token_cost
+from .api_call import ask_llm
 from .graphs import permute_knowledge_graph
 from .prompts import create_sys_prompts, create_user_prompts
 
@@ -50,15 +50,23 @@ def has_n_experiments(knowledge_graph: dict, num_experiments: int = 1) -> bool:
 
 def postprocess_json(response_json: dict) -> dict:
     """
-    Process the JSON output from the GPT call.
+    Process the JSON output from the LLM call.
 
     Args:
-        response_json (dict): JSON response from ask_gpt4.
+        response_json (dict): JSON response from ask_llm.
 
     Returns:
         dict: Parsed response content.
     """
     response_content = response_json["choices"][0]["message"]["content"]
+
+    # Find the first occurrence of '{' and the last occurrence of '}'
+    start_idx = response_content.find("{")
+    end_idx = response_content.rfind("}")
+
+    if start_idx != -1 and end_idx != -1:
+        response_content = response_content[start_idx : end_idx + 1]
+
     # Remove code block markers if present
     response_content = response_content.removeprefix("```json").removesuffix("```")
     # Replace escape characters as needed
@@ -67,7 +75,7 @@ def postprocess_json(response_json: dict) -> dict:
     return json.loads(response_content)
 
 
-def run(paper_text: str, max_num_samples: int = 10, llm: str = "gpt-4o-08-06") -> dict:
+def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-2024-08-06") -> dict:
     """
     Process the provided paper text through several NLP steps and return the results.
 
@@ -99,28 +107,20 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "gpt-4o-08-06") -
     # Summarize methods.
     print("Summarizing methods for paper...")
     user_prompt = create_user_prompts.summarize_methods(paper_text)
-    response = ask_gpt4(sys_prompt, user_prompt)
-    if response is None:
-        raise ValueError("Failed to get response from GPT-4")
+    response, cost = ask_llm(llm, sys_prompt, user_prompt)
     response_json = json.loads(response)
     response_content = postprocess_json(response_json)
-    n_input_tokens = int(response_json["usage"]["prompt_tokens"])
-    n_output_tokens = int(response_json["usage"]["completion_tokens"])
     outputs["methods"] = response_content.get("methods")
+    total_cost["methods"] = cost
 
     # Step 1: Create initial knowledge graph conditioned on the full paper.
     print("Creating initial knowledge graph for paper...")
     kg_creator = create_user_prompts.KnowledgeGraphCreator(paper_text)
     user_prompt = kg_creator.create_initial_kg()
-    response = ask_gpt4(sys_prompt, user_prompt)
-    if response is None:
-        raise ValueError("Failed to get response from GPT-4")
+    response, cost = ask_llm(llm, sys_prompt, user_prompt)
     response_json = json.loads(response)
     response_content = postprocess_json(response_json)
-    n_input_tokens = int(response_json["usage"]["prompt_tokens"])
-    n_output_tokens = int(response_json["usage"]["completion_tokens"])
     outputs["knowledge_graph"] = response_content.get("knowledge_graph")
-    cost = token_cost(n_input_tokens, n_output_tokens)
     total_cost["res_to_kg"] = cost
 
     # Only proceed if there is exactly one experiment in the knowledge graph.
@@ -128,36 +128,26 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "gpt-4o-08-06") -
         # Step 2: Convert original KG to text (per experiment).
         print("Converting knowledge graph to text...")
         outputs["results"] = {}
-        n_input_tokens = 0
-        n_output_tokens = 0
+        kg_to_text_cost = 0.0
         for experiment_i in range(1, len(outputs["knowledge_graph"]) + 1):
             key = f"experiment_{experiment_i}"
             user_prompt = kg_creator.convert_kg_to_text_single_experiment(
                 outputs["knowledge_graph"][key]
             )
-            response = ask_gpt4(sys_prompt, user_prompt)
-            if response is None:
-                raise ValueError("Failed to get response from GPT-4")
+            response, cost = ask_llm(llm, sys_prompt, user_prompt)
             response_json = json.loads(response)
             response_content = postprocess_json(response_json)
-            n_input_tokens += int(response_json["usage"]["prompt_tokens"])
-            n_output_tokens += int(response_json["usage"]["completion_tokens"])
+            kg_to_text_cost += cost
             outputs["results"][key] = response_content.get("results")
-        cost = token_cost(n_input_tokens, n_output_tokens)
-        total_cost["kg_to_text"] = cost
+        total_cost["kg_to_text"] = kg_to_text_cost
 
         # Step 3: Identify semantic groups.
         print("Identifying semantic groups...")
         user_prompt = kg_creator.identify_semantic_groups(outputs["knowledge_graph"])
-        response = ask_gpt4(sys_prompt, user_prompt)
-        if response is None:
-            raise ValueError("Failed to get response from GPT-4")
+        response, cost = ask_llm(llm, sys_prompt, user_prompt)
         response_json = json.loads(response)
         response_content = postprocess_json(response_json)
-        n_input_tokens = int(response_json["usage"]["prompt_tokens"])
-        n_output_tokens = int(response_json["usage"]["completion_tokens"])
         outputs["semantic_groups"] = response_content.get("semantic_groups")
-        cost = token_cost(n_input_tokens, n_output_tokens)
         total_cost["kg_to_semantic_groups"] = cost
 
         # Step 4: Create permuted knowledge graphs.
@@ -174,8 +164,7 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "gpt-4o-08-06") -
         # Step 5: Convert permuted KGs to text.
         print("Converting permuted knowledge graphs to text...")
         outputs["results_permutations"] = {}
-        n_input_tokens_kg_to_text = 0
-        n_output_tokens_kg_to_text = 0
+        kg_permutes_to_text_cost = 0.0
         num_graph_permutations: dict[int | str, int] = {}
         for experiment_i, kg_perms in knowledge_graph_permutations.items():
             outputs["results_permutations"][experiment_i] = {}
@@ -186,13 +175,10 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "gpt-4o-08-06") -
                 user_prompt = kg_creator.convert_kg_to_text_single_experiment(
                     kg, orig_results_as_example=outputs["results"][experiment_i]
                 )
-                response = ask_gpt4(sys_prompt, user_prompt)
-                if response is None:
-                    raise ValueError("Failed to get response from GPT-4")
+                response, cost = ask_llm(llm, sys_prompt, user_prompt)
                 response_json = json.loads(response)
                 response_content = postprocess_json(response_json)
-                n_input_tokens_kg_to_text += int(response_json["usage"]["prompt_tokens"])
-                n_output_tokens_kg_to_text += int(response_json["usage"]["completion_tokens"])
+                kg_permutes_to_text_cost += cost
                 outputs["results_permutations"][experiment_i][permutation_i] = response_content.get(
                     "results"
                 )
@@ -202,8 +188,7 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "gpt-4o-08-06") -
         outputs["num_graph_permutations"] = num_graph_permutations
 
         # Calculate and record token costs.
-        kg_to_text_cost = token_cost(n_input_tokens_kg_to_text, n_output_tokens_kg_to_text)
-        total_cost["kg_permutes_to_text"] = kg_to_text_cost
+        total_cost["kg_permutes_to_text"] = kg_permutes_to_text_cost
         total_cost["total"] = sum(total_cost.values())
         outputs["token_cost"] = total_cost
     else:

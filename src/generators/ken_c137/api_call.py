@@ -2,48 +2,31 @@
 
 import asyncio
 import logging
-import os
 import time
 
-import tiktoken
 from dotenv import load_dotenv
-from openai import AsyncAzureOpenAI, AzureOpenAI
+from litellm import acompletion, completion, token_counter  # type: ignore[import-not-found]
 
 
-def get_num_tokens(sys_prompt: str, user_prompt: str) -> int:
+def get_num_tokens(model: str, messages: list[dict]) -> int:
     """Get the number of tokens in the system and user prompts.
 
     Args:
-        sys_prompt: The system prompt.
-        user_prompt: The user prompt.
+        model: The model to use.
+        messages: The messages to count the tokens of.
 
     Returns:
         The number of tokens in the system and user prompts.
     """
-    enc = tiktoken.encoding_for_model("gpt-4o")
-    num_tokens = len(enc.encode(sys_prompt)) + len(enc.encode(user_prompt))
+    num_tokens = token_counter(
+        model,
+        messages=messages,
+    )
     return num_tokens
 
 
-def token_cost(input_tokens: int, output_tokens: int) -> float:
-    """Get the cost of the tokens.
-
-    Args:
-        input_tokens: The number of input tokens.
-        output_tokens: The number of output tokens.
-
-    Returns:
-        The cost of the tokens.
-    """
-    pricing = {"gpt-4o-08-06": {"input_token": 2.5 / 10**6, "output_token": 10 / 10**6}}
-    return (
-        pricing["gpt-4o-08-06"]["input_token"] * input_tokens
-        + pricing["gpt-4o-08-06"]["output_token"] * output_tokens
-    )
-
-
 class MinuteRateLimiter:
-    """Rate limiter for the Azure OpenAI API."""
+    """Rate limiter for the LLM."""
 
     def __init__(self, tokens_per_minute: int) -> None:
         """Initialize the rate limiter.
@@ -54,7 +37,7 @@ class MinuteRateLimiter:
         self.tokens_per_minute = tokens_per_minute
         self.tokens_available = tokens_per_minute
         self.last_refill_time = time.time()
-        self.lock = asyncio.Lock()
+        self.lock: asyncio.Lock = asyncio.Lock()
 
     async def acquire(self, tokens: int) -> None:
         """Acquire the tokens.
@@ -87,95 +70,80 @@ class MinuteRateLimiter:
 rate_limiter = MinuteRateLimiter(tokens_per_minute=100000)
 
 
-def ask_gpt4(
-    sys_prompt: str, user_prompt: str, top_p: float = 1, temperature: float = 0.5
-) -> str | None:
-    """Ask the Azure OpenAI API.
+def ask_llm(
+    model: str, sys_prompt: str, user_prompt: str, top_p: float = 1, temperature: float = 0.5
+) -> tuple[str, float]:
+    """Ask the LLM.
 
     Args:
+        model: The model to use.
         sys_prompt: The system prompt.
         user_prompt: The user prompt.
         top_p: The top p value.
         temperature: The temperature value.
 
     Returns:
-        The response from the Azure OpenAI API or None if an error occurs.
+        The response from the API and the cost of the request.
     """
-    logging.info("[ask_gpt4]: Calling Azure OpenAI API")
+    logging.info(f"[ask_llm]: Calling for {model}")
     load_dotenv()
-    azure_endpoint = os.getenv("OPENAI_AZURE_ENDPOINT")
-    if azure_endpoint is None:
-        raise ValueError("OPENAI_AZURE_ENDPOINT is not set")
 
-    client = AzureOpenAI(
-        api_key=os.getenv("OPENAI_API_KEY"),
-        api_version="2024-07-01-preview",
-        azure_endpoint=azure_endpoint,
-    )
+    messages = [
+        {"role": "system", "content": sys_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
 
     # Minimal error handling for now
     try:
-        completion = client.chat.completions.create(
-            model="gpt-4o-2024-08-06",  # deployment name not model name
-            messages=[
-                {"role": "system", "content": sys_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
+        response = completion(
+            model=model,
+            messages=messages,
             top_p=top_p,
             temperature=temperature,
         )
 
     except Exception as e:
-        logging.error(f"An error occurred while attempting to communicate with Azure OpenAI: {e}")
+        logging.error(f"An error occurred while attempting to communicate with {model}: {e}")
+        raise e
 
-        return None
-
-    return completion.model_dump_json(indent=2)
+    return response.model_dump_json(indent=2), response._hidden_params["response_cost"]
 
 
-async def ask_gpt4_async(
-    sys_prompt: str, user_prompt: str, top_p: float = 1, temperature: float = 0.5
-) -> str | None:
-    """Ask the Azure OpenAI API asynchronously.
+async def ask_llm_async(
+    model: str, sys_prompt: str, user_prompt: str, top_p: float = 1, temperature: float = 0.5
+) -> tuple[str, float]:
+    """Ask the LLM asynchronously.
 
     Args:
+        model: The model to use.
         sys_prompt: The system prompt.
         user_prompt: The user prompt.
         top_p: The top p value.
         temperature: The temperature value.
 
     Returns:
-        The response from the Azure OpenAI API or None if an error occurs.
+        The response from the LLM and the cost of the request.
     """
-    logging.info("[ask_gpt4]: Calling Azure OpenAI API")
+    logging.info(f"[ask_llm_async]: Calling for {model}")
     load_dotenv()
-    azure_endpoint = os.getenv("OPENAI_AZURE_ENDPOINT")
-    if azure_endpoint is None:
-        raise ValueError("OPENAI_AZURE_ENDPOINT is not set")
 
-    client = AsyncAzureOpenAI(
-        api_key=os.getenv("OPENAI_API_KEY"),
-        api_version="2024-07-01-preview",
-        azure_endpoint=azure_endpoint,
-    )
-
-    await rate_limiter.acquire(get_num_tokens(sys_prompt, user_prompt))
+    messages = [
+        {"role": "system", "content": sys_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+    await rate_limiter.acquire(get_num_tokens(model, messages))
 
     # Minimal error handling for now
     try:
-        completion = await client.chat.completions.create(
-            model="gpt-4o-2024-08-06",  # deployment name not model name
-            messages=[
-                {"role": "system", "content": sys_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
+        response = await acompletion(
+            model=model,
+            messages=messages,
             top_p=top_p,
             temperature=temperature,
         )
 
     except Exception as e:
-        logging.error(f"An error occurred while attempting to communicate with Azure OpenAI: {e}")
+        logging.error(f"An error occurred while attempting to communicate with {model}: {e}")
+        raise e
 
-        return None
-
-    return completion.model_dump_json(indent=2)
+    return response.model_dump_json(indent=2), response._hidden_params["response_cost"]
