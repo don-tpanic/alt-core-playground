@@ -19,7 +19,7 @@ def main() -> None:
         help="Maximal number of samples of permutations to generate",
     )
     parser.add_argument(
-        "--llm", type=str, default="gpt-4o-2024-08-06", help="LLM to use for processing"
+        "--llm", type=str, default="azure/gpt-4o-2024-08-06", help="LLM to use for processing"
     )
     parser.add_argument(
         "--additional-config",
@@ -60,7 +60,7 @@ def main() -> None:
         print(f"Error running module {uid}: {e}")
         return
 
-    output_filename = f"gen_{uid}_algo{algo_name}_{llm}"
+    output_filename = f"gen_{uid}_{algo_name}_{llm.replace('/', '-')}"
     if additional_config:
         output_filename += f"_{additional_config}"
     output_filename += ".json"
