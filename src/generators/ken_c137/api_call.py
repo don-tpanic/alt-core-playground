@@ -5,7 +5,7 @@ import logging
 import time
 
 from dotenv import load_dotenv
-from litellm import acompletion, completion, token_counter  # type: ignore[import-not-found]
+from litellm import acompletion, completion, token_counter
 
 
 def get_num_tokens(model: str, messages: list[dict]) -> int:
