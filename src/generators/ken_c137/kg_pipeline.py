@@ -5,10 +5,14 @@ from typing import Any
 
 import numpy as np
 
-from llm.caller import ask_llm
+from llm.caller import ask_llm, ask_llm_with_schema
+from logger import get_logger
 
 from .graphs import permute_knowledge_graph
 from .prompts import create_sys_prompts, create_user_prompts
+from .prompts.response_models import SummarizeMethods
+
+logger = get_logger(__name__)
 
 
 def sampling_permutations(
@@ -72,7 +76,7 @@ def postprocess_json(response_json: dict) -> dict:
     response_content = response_content.removeprefix("```json").removesuffix("```")
     # Replace escape characters as needed
     response_content = response_content.replace("\\", "\\\\")
-    print("response_content", response_content)
+    logger.debug("response_content %s", response_content)
     return json.loads(response_content)
 
 
@@ -106,16 +110,14 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
     sys_prompt = create_sys_prompts.prompts()
 
     # Summarize methods.
-    print("Summarizing methods for paper...")
+    logger.info("Summarizing methods for paper...")
     user_prompt = create_user_prompts.summarize_methods(paper_text)
-    response, cost = ask_llm(llm, sys_prompt, user_prompt)
-    response_json = json.loads(response)
-    response_content = postprocess_json(response_json)
-    outputs["methods"] = response_content.get("methods")
+    summarize_methods, cost = ask_llm_with_schema(llm, sys_prompt, user_prompt, SummarizeMethods)
+    outputs["methods"] = summarize_methods.methods
     total_cost["methods"] = cost
 
     # Step 1: Create initial knowledge graph conditioned on the full paper.
-    print("Creating initial knowledge graph for paper...")
+    logger.info("Creating initial knowledge graph for paper...")
     kg_creator = create_user_prompts.KnowledgeGraphCreator(paper_text)
     user_prompt = kg_creator.create_initial_kg()
     response, cost = ask_llm(llm, sys_prompt, user_prompt)
@@ -127,7 +129,7 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
     # Only proceed if there is exactly one experiment in the knowledge graph.
     if has_n_experiments(outputs["knowledge_graph"], num_experiments=1):
         # Step 2: Convert original KG to text (per experiment).
-        print("Converting knowledge graph to text...")
+        logger.info("Converting knowledge graph to text...")
         outputs["results"] = {}
         kg_to_text_cost = 0.0
         for experiment_i in range(1, len(outputs["knowledge_graph"]) + 1):
@@ -143,7 +145,7 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
         total_cost["kg_to_text"] = kg_to_text_cost
 
         # Step 3: Identify semantic groups.
-        print("Identifying semantic groups...")
+        logger.info("Identifying semantic groups...")
         user_prompt = kg_creator.identify_semantic_groups(outputs["knowledge_graph"])
         response, cost = ask_llm(llm, sys_prompt, user_prompt)
         response_json = json.loads(response)
@@ -152,7 +154,7 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
         total_cost["kg_to_semantic_groups"] = cost
 
         # Step 4: Create permuted knowledge graphs.
-        print("Creating permuted knowledge graphs...")
+        logger.info("Creating permuted knowledge graphs...")
         (knowledge_graph_permutations, node_swaps_tracker, triple_deviation_pct) = (
             permute_knowledge_graph.create_permutations(
                 outputs["knowledge_graph"], outputs["semantic_groups"]
@@ -163,7 +165,7 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
         outputs["triple_deviation_pct"] = triple_deviation_pct
 
         # Step 5: Convert permuted KGs to text.
-        print("Converting permuted knowledge graphs to text...")
+        logger.info("Converting permuted knowledge graphs to text...")
         outputs["results_permutations"] = {}
         kg_permutes_to_text_cost = 0.0
         num_graph_permutations: dict[int | str, int] = {}
@@ -172,7 +174,7 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
             num_graph_permutations[experiment_i] = len(kg_perms)
 
             for permutation_i, kg in sampling_permutations(kg_perms, max_num_samples):
-                print(f"Converting permutation {permutation_i} for {experiment_i}...")
+                logger.info(f"Converting permutation {permutation_i} for {experiment_i}...")
                 user_prompt = kg_creator.convert_kg_to_text_single_experiment(
                     kg, orig_results_as_example=outputs["results"][experiment_i]
                 )
@@ -193,6 +195,6 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
         total_cost["total"] = sum(total_cost.values())
         outputs["token_cost"] = total_cost
     else:
-        print("Paper has more than 1 experiment, processing is skipped.")
+        logger.info("Paper has more than 1 experiment, processing is skipped.")
 
     return outputs
