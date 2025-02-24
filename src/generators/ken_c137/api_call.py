@@ -4,8 +4,11 @@ import asyncio
 import logging
 import time
 
+import litellm
 from dotenv import load_dotenv
 from litellm import acompletion, completion, token_counter
+
+litellm._turn_on_debug()
 
 
 def get_num_tokens(model: str, messages: list[dict]) -> int:

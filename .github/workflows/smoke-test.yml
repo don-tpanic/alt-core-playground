@@ -32,7 +32,7 @@ jobs:
           python -m generators.main --doi 10.1016:j.cognition.2020.104244 --gen-uid ken_c137 --algo-name algo1 --llm azure/gpt-4o-2024-08-06
 
           # Validate the output using jq
-          TOTAL=$(jq '.num_graph_permutations.total' papers/10.1016:j.cognition.2020.104244/gen_ken_c137_algo1_openai-gpt-4o-2024-08-06.json)
+          TOTAL=$(jq '.num_graph_permutations.total' papers/10.1016:j.cognition.2020.104244/gen_ken_c137_algo1_azure-gpt-4o-2024-08-06.json)
           if [ "$TOTAL" -le 3 ]; then
             echo "Error: Total permutations ($TOTAL) must be greater than 3"
             exit 1
