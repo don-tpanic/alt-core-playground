@@ -1,8 +1,9 @@
 {
     "llm": "openai/gpt-4o-2024-08-06",
-    "methods": "The study introduces the Coherency Driven Choice (CDC) model, a computational cognitive model that represents preferences and choices in a shared, continuous, multidimensional space. The model updates preferences based on past choices to maintain coherence between them. This error-driven learning model increases the likelihood of repeating past and similar choices by aligning preferences with previous decisions. In Experiment 1, participants designed a toy robot and then chose between patterns associated with their design, demonstrating preference formation in a controlled setting. The model was validated through simulations and a large-scale experiment, showing that participants adjusted their preferences to align with past choices, even in domains with strong pre-existing preferences, such as political beliefs.",
-    "knowledge_graph": {
-        "experiment_1": {
+    "methods": "The study employed a computational cognitive model called the Coherency Driven Choice (CDC) model to simulate how subjective preferences are formed and modified over time. The model represents choice options and preferences in a shared, continuous, multidimensional space. It uses an error-driven learning process to update preferences to align with past choices, increasing the likelihood of repeating those choices. In Experiment 1, participants designed a toy robot and were then introduced to a second robot. Both robots revealed patterns on their backs, and participants were asked to choose their preferred pattern. The study hypothesized that participants would prefer patterns associated with their designed robot, demonstrating preference formation through choice-induced learning. The CDC model was simulated in a controlled environment to illustrate how preferences evolve through repeated choices.",
+    "knowledge_graph": [
+        {
+            "experiment_name": "Experiment 1: Preference for Novel Patterns",
             "nodes": [
                 {
                     "id": 1,
@@ -10,149 +11,189 @@
                 },
                 {
                     "id": 2,
-                    "label": "Robot Design"
+                    "label": "Design Phase"
                 },
                 {
                     "id": 3,
-                    "label": "Unique Chosen Pattern"
+                    "label": "Robot Design"
                 },
                 {
                     "id": 4,
-                    "label": "Shared Pattern"
+                    "label": "Anti-Robot"
                 },
                 {
                     "id": 5,
-                    "label": "Non-Chosen Pattern"
+                    "label": "Pattern Revelation"
                 },
                 {
                     "id": 6,
-                    "label": "Preference Ranking"
+                    "label": "Chosen Unique Pattern"
                 },
                 {
                     "id": 7,
-                    "label": "Preference Change"
+                    "label": "Shared Pattern"
                 },
                 {
                     "id": 8,
-                    "label": "Discriminative Learning"
+                    "label": "Non-Chosen Pattern"
                 },
                 {
                     "id": 9,
-                    "label": "Generalization to Novel Patterns"
+                    "label": "Preference Ranking"
+                },
+                {
+                    "id": 10,
+                    "label": "Increased Preference for Chosen Unique Pattern"
+                },
+                {
+                    "id": 11,
+                    "label": "Generalization of Preference"
                 }
             ],
             "edges": [
                 {
                     "source": 1,
                     "target": 2,
-                    "relation": "designs"
+                    "relation": "participate in"
                 },
                 {
                     "source": 2,
                     "target": 3,
-                    "relation": "associated_with"
-                },
-                {
-                    "source": 2,
-                    "target": 5,
-                    "relation": "not_associated_with"
+                    "relation": "create"
                 },
                 {
                     "source": 3,
-                    "target": 6,
-                    "relation": "higher_preference"
+                    "target": 4,
+                    "relation": "contrast with"
+                },
+                {
+                    "source": 3,
+                    "target": 5,
+                    "relation": "turns to reveal"
                 },
                 {
                     "source": 4,
-                    "target": 6,
-                    "relation": "medium_preference"
+                    "target": 5,
+                    "relation": "turns to reveal"
                 },
                 {
                     "source": 5,
                     "target": 6,
-                    "relation": "lower_preference"
+                    "relation": "reveals"
                 },
                 {
-                    "source": 6,
+                    "source": 5,
                     "target": 7,
-                    "relation": "indicates"
+                    "relation": "reveals"
                 },
                 {
-                    "source": 7,
+                    "source": 5,
                     "target": 8,
-                    "relation": "supports"
+                    "relation": "reveals"
                 },
                 {
-                    "source": 7,
+                    "source": 1,
                     "target": 9,
-                    "relation": "demonstrates"
+                    "relation": "perform"
                 },
                 {
-                    "source": 8,
-                    "target": 9,
-                    "relation": "enables"
+                    "source": 9,
+                    "target": 10,
+                    "relation": "results in"
+                },
+                {
+                    "source": 10,
+                    "target": 11,
+                    "relation": "leads to"
                 }
             ]
         }
-    },
+    ],
     "results": {
-        "experiment_1": "The study involved participants interacting with various robot designs, where each design was associated with a unique chosen pattern and not associated with a non-chosen pattern. Participants exhibited a higher preference for the unique chosen pattern, a medium preference for shared patterns, and a lower preference for non-chosen patterns. The preference rankings indicated a change in preferences, supporting discriminative learning. This change also demonstrated the participants' ability to generalize their preferences to novel patterns."
+        "experiment_1": "In the study titled \"Experiment 1: Preference for Novel Patterns,\" participants were involved in a design phase where they created a robot design, which was contrasted with an anti-robot design. During the pattern revelation stage, both designs turned to reveal a chosen unique pattern, a shared pattern, and a non-chosen pattern. Participants performed a preference ranking task, which resulted in an increased preference for the chosen unique pattern. This increased preference subsequently led to a generalization of preference, indicating a broader application of the preference for novel patterns."
     },
-    "semantic_groups": {
-        "experiment_1": {
-            "Participants and Design": [
+    "semantic_groups": [
+        {
+            "experiment_name": "Experiment 1: Preference for Novel Patterns",
+            "semantic_groups": [
                 {
-                    "id": 1,
-                    "label": "Participants",
-                    "level": 1
+                    "group_name": "Participants and Actions",
+                    "nodes": [
+                        {
+                            "id": 1,
+                            "label": "Participants",
+                            "level": 1
+                        },
+                        {
+                            "id": 9,
+                            "label": "Preference Ranking",
+                            "level": 2
+                        }
+                    ]
                 },
                 {
-                    "id": 2,
-                    "label": "Robot Design",
-                    "level": 2
-                }
-            ],
-            "Pattern Preferences": [
-                {
-                    "id": 3,
-                    "label": "Unique Chosen Pattern",
-                    "level": 2
+                    "group_name": "Design and Development",
+                    "nodes": [
+                        {
+                            "id": 2,
+                            "label": "Design Phase",
+                            "level": 1
+                        },
+                        {
+                            "id": 3,
+                            "label": "Robot Design",
+                            "level": 2
+                        },
+                        {
+                            "id": 4,
+                            "label": "Anti-Robot",
+                            "level": 2
+                        }
+                    ]
                 },
                 {
-                    "id": 4,
-                    "label": "Shared Pattern",
-                    "level": 2
+                    "group_name": "Pattern Revelation and Choices",
+                    "nodes": [
+                        {
+                            "id": 5,
+                            "label": "Pattern Revelation",
+                            "level": 1
+                        },
+                        {
+                            "id": 6,
+                            "label": "Chosen Unique Pattern",
+                            "level": 2
+                        },
+                        {
+                            "id": 7,
+                            "label": "Shared Pattern",
+                            "level": 2
+                        },
+                        {
+                            "id": 8,
+                            "label": "Non-Chosen Pattern",
+                            "level": 2
+                        }
+                    ]
                 },
                 {
-                    "id": 5,
-                    "label": "Non-Chosen Pattern",
-                    "level": 2
-                },
-                {
-                    "id": 6,
-                    "label": "Preference Ranking",
-                    "level": 1
-                }
-            ],
-            "Learning and Generalization": [
-                {
-                    "id": 7,
-                    "label": "Preference Change",
-                    "level": 2
-                },
-                {
-                    "id": 8,
-                    "label": "Discriminative Learning",
-                    "level": 1
-                },
-                {
-                    "id": 9,
-                    "label": "Generalization to Novel Patterns",
-                    "level": 1
+                    "group_name": "Preference Outcomes",
+                    "nodes": [
+                        {
+                            "id": 10,
+                            "label": "Increased Preference for Chosen Unique Pattern",
+                            "level": 1
+                        },
+                        {
+                            "id": 11,
+                            "label": "Generalization of Preference",
+                            "level": 2
+                        }
+                    ]
                 }
             ]
         }
-    },
+    ],
     "knowledge_graph_permutations": {
         "experiment_1": {
             "2": {
@@ -163,455 +204,100 @@
                     },
                     {
                         "id": 2,
+                        "label": "Design Phase"
+                    },
+                    {
+                        "id": 4,
                         "label": "Robot Design"
                     },
                     {
                         "id": 3,
-                        "label": "Unique Chosen Pattern"
+                        "label": "Anti-Robot"
                     },
                     {
                         "id": 5,
-                        "label": "Shared Pattern"
-                    },
-                    {
-                        "id": 4,
-                        "label": "Non-Chosen Pattern"
+                        "label": "Pattern Revelation"
                     },
                     {
                         "id": 6,
-                        "label": "Preference Ranking"
+                        "label": "Chosen Unique Pattern"
                     },
                     {
                         "id": 7,
-                        "label": "Preference Change"
+                        "label": "Shared Pattern"
                     },
                     {
                         "id": 8,
-                        "label": "Discriminative Learning"
+                        "label": "Non-Chosen Pattern"
                     },
                     {
                         "id": 9,
-                        "label": "Generalization to Novel Patterns"
+                        "label": "Preference Ranking"
+                    },
+                    {
+                        "id": 10,
+                        "label": "Increased Preference for Chosen Unique Pattern"
+                    },
+                    {
+                        "id": 11,
+                        "label": "Generalization of Preference"
                     }
                 ],
                 "edges": [
                     {
                         "source": 1,
                         "target": 2,
-                        "relation": "designs"
+                        "relation": "participate in"
                     },
                     {
                         "source": 2,
                         "target": 3,
-                        "relation": "associated_with"
-                    },
-                    {
-                        "source": 2,
-                        "target": 5,
-                        "relation": "not_associated_with"
+                        "relation": "create"
                     },
                     {
                         "source": 3,
-                        "target": 6,
-                        "relation": "higher_preference"
+                        "target": 4,
+                        "relation": "contrast with"
+                    },
+                    {
+                        "source": 3,
+                        "target": 5,
+                        "relation": "turns to reveal"
                     },
                     {
                         "source": 4,
-                        "target": 6,
-                        "relation": "medium_preference"
+                        "target": 5,
+                        "relation": "turns to reveal"
                     },
                     {
                         "source": 5,
                         "target": 6,
-                        "relation": "lower_preference"
+                        "relation": "reveals"
                     },
                     {
-                        "source": 6,
+                        "source": 5,
                         "target": 7,
-                        "relation": "indicates"
+                        "relation": "reveals"
                     },
                     {
-                        "source": 7,
+                        "source": 5,
                         "target": 8,
-                        "relation": "supports"
+                        "relation": "reveals"
                     },
-                    {
-                        "source": 7,
-                        "target": 9,
-                        "relation": "demonstrates"
-                    },
-                    {
-                        "source": 8,
-                        "target": 9,
-                        "relation": "enables"
-                    }
-                ]
-            },
-            "3": {
-                "nodes": [
-                    {
-                        "id": 1,
-                        "label": "Participants"
-                    },
-                    {
-                        "id": 2,
-                        "label": "Robot Design"
-                    },
-                    {
-                        "id": 4,
-                        "label": "Unique Chosen Pattern"
-                    },
-                    {
-                        "id": 3,
-                        "label": "Shared Pattern"
-                    },
-                    {
-                        "id": 5,
-                        "label": "Non-Chosen Pattern"
-                    },
-                    {
-                        "id": 6,
-                        "label": "Preference Ranking"
-                    },
-                    {
-                        "id": 7,
-                        "label": "Preference Change"
-                    },
-                    {
-                        "id": 8,
-                        "label": "Discriminative Learning"
-                    },
-                    {
-                        "id": 9,
-                        "label": "Generalization to Novel Patterns"
-                    }
-                ],
-                "edges": [
                     {
                         "source": 1,
-                        "target": 2,
-                        "relation": "designs"
-                    },
-                    {
-                        "source": 2,
-                        "target": 3,
-                        "relation": "associated_with"
-                    },
-                    {
-                        "source": 2,
-                        "target": 5,
-                        "relation": "not_associated_with"
-                    },
-                    {
-                        "source": 3,
-                        "target": 6,
-                        "relation": "higher_preference"
-                    },
-                    {
-                        "source": 4,
-                        "target": 6,
-                        "relation": "medium_preference"
-                    },
-                    {
-                        "source": 5,
-                        "target": 6,
-                        "relation": "lower_preference"
-                    },
-                    {
-                        "source": 6,
-                        "target": 7,
-                        "relation": "indicates"
-                    },
-                    {
-                        "source": 7,
-                        "target": 8,
-                        "relation": "supports"
-                    },
-                    {
-                        "source": 7,
                         "target": 9,
-                        "relation": "demonstrates"
+                        "relation": "perform"
                     },
                     {
-                        "source": 8,
-                        "target": 9,
-                        "relation": "enables"
-                    }
-                ]
-            },
-            "4": {
-                "nodes": [
-                    {
-                        "id": 1,
-                        "label": "Participants"
+                        "source": 9,
+                        "target": 10,
+                        "relation": "results in"
                     },
                     {
-                        "id": 2,
-                        "label": "Robot Design"
-                    },
-                    {
-                        "id": 4,
-                        "label": "Unique Chosen Pattern"
-                    },
-                    {
-                        "id": 5,
-                        "label": "Shared Pattern"
-                    },
-                    {
-                        "id": 3,
-                        "label": "Non-Chosen Pattern"
-                    },
-                    {
-                        "id": 6,
-                        "label": "Preference Ranking"
-                    },
-                    {
-                        "id": 7,
-                        "label": "Preference Change"
-                    },
-                    {
-                        "id": 8,
-                        "label": "Discriminative Learning"
-                    },
-                    {
-                        "id": 9,
-                        "label": "Generalization to Novel Patterns"
-                    }
-                ],
-                "edges": [
-                    {
-                        "source": 1,
-                        "target": 2,
-                        "relation": "designs"
-                    },
-                    {
-                        "source": 2,
-                        "target": 3,
-                        "relation": "associated_with"
-                    },
-                    {
-                        "source": 2,
-                        "target": 5,
-                        "relation": "not_associated_with"
-                    },
-                    {
-                        "source": 3,
-                        "target": 6,
-                        "relation": "higher_preference"
-                    },
-                    {
-                        "source": 4,
-                        "target": 6,
-                        "relation": "medium_preference"
-                    },
-                    {
-                        "source": 5,
-                        "target": 6,
-                        "relation": "lower_preference"
-                    },
-                    {
-                        "source": 6,
-                        "target": 7,
-                        "relation": "indicates"
-                    },
-                    {
-                        "source": 7,
-                        "target": 8,
-                        "relation": "supports"
-                    },
-                    {
-                        "source": 7,
-                        "target": 9,
-                        "relation": "demonstrates"
-                    },
-                    {
-                        "source": 8,
-                        "target": 9,
-                        "relation": "enables"
-                    }
-                ]
-            },
-            "5": {
-                "nodes": [
-                    {
-                        "id": 1,
-                        "label": "Participants"
-                    },
-                    {
-                        "id": 2,
-                        "label": "Robot Design"
-                    },
-                    {
-                        "id": 5,
-                        "label": "Unique Chosen Pattern"
-                    },
-                    {
-                        "id": 3,
-                        "label": "Shared Pattern"
-                    },
-                    {
-                        "id": 4,
-                        "label": "Non-Chosen Pattern"
-                    },
-                    {
-                        "id": 6,
-                        "label": "Preference Ranking"
-                    },
-                    {
-                        "id": 7,
-                        "label": "Preference Change"
-                    },
-                    {
-                        "id": 8,
-                        "label": "Discriminative Learning"
-                    },
-                    {
-                        "id": 9,
-                        "label": "Generalization to Novel Patterns"
-                    }
-                ],
-                "edges": [
-                    {
-                        "source": 1,
-                        "target": 2,
-                        "relation": "designs"
-                    },
-                    {
-                        "source": 2,
-                        "target": 3,
-                        "relation": "associated_with"
-                    },
-                    {
-                        "source": 2,
-                        "target": 5,
-                        "relation": "not_associated_with"
-                    },
-                    {
-                        "source": 3,
-                        "target": 6,
-                        "relation": "higher_preference"
-                    },
-                    {
-                        "source": 4,
-                        "target": 6,
-                        "relation": "medium_preference"
-                    },
-                    {
-                        "source": 5,
-                        "target": 6,
-                        "relation": "lower_preference"
-                    },
-                    {
-                        "source": 6,
-                        "target": 7,
-                        "relation": "indicates"
-                    },
-                    {
-                        "source": 7,
-                        "target": 8,
-                        "relation": "supports"
-                    },
-                    {
-                        "source": 7,
-                        "target": 9,
-                        "relation": "demonstrates"
-                    },
-                    {
-                        "source": 8,
-                        "target": 9,
-                        "relation": "enables"
-                    }
-                ]
-            },
-            "6": {
-                "nodes": [
-                    {
-                        "id": 1,
-                        "label": "Participants"
-                    },
-                    {
-                        "id": 2,
-                        "label": "Robot Design"
-                    },
-                    {
-                        "id": 5,
-                        "label": "Unique Chosen Pattern"
-                    },
-                    {
-                        "id": 4,
-                        "label": "Shared Pattern"
-                    },
-                    {
-                        "id": 3,
-                        "label": "Non-Chosen Pattern"
-                    },
-                    {
-                        "id": 6,
-                        "label": "Preference Ranking"
-                    },
-                    {
-                        "id": 7,
-                        "label": "Preference Change"
-                    },
-                    {
-                        "id": 8,
-                        "label": "Discriminative Learning"
-                    },
-                    {
-                        "id": 9,
-                        "label": "Generalization to Novel Patterns"
-                    }
-                ],
-                "edges": [
-                    {
-                        "source": 1,
-                        "target": 2,
-                        "relation": "designs"
-                    },
-                    {
-                        "source": 2,
-                        "target": 3,
-                        "relation": "associated_with"
-                    },
-                    {
-                        "source": 2,
-                        "target": 5,
-                        "relation": "not_associated_with"
-                    },
-                    {
-                        "source": 3,
-                        "target": 6,
-                        "relation": "higher_preference"
-                    },
-                    {
-                        "source": 4,
-                        "target": 6,
-                        "relation": "medium_preference"
-                    },
-                    {
-                        "source": 5,
-                        "target": 6,
-                        "relation": "lower_preference"
-                    },
-                    {
-                        "source": 6,
-                        "target": 7,
-                        "relation": "indicates"
-                    },
-                    {
-                        "source": 7,
-                        "target": 8,
-                        "relation": "supports"
-                    },
-                    {
-                        "source": 7,
-                        "target": 9,
-                        "relation": "demonstrates"
-                    },
-                    {
-                        "source": 8,
-                        "target": 9,
-                        "relation": "enables"
+                        "source": 10,
+                        "target": 11,
+                        "relation": "leads to"
                     }
                 ]
             }
@@ -621,95 +307,15 @@
         "experiment_1": {
             "2": [
                 [
-                    "Pattern Preferences",
+                    "Design and Development",
                     [
                         [
-                            "Unique Chosen Pattern",
-                            "Unique Chosen Pattern"
+                            "Robot Design",
+                            "Anti-Robot"
                         ],
                         [
-                            "Shared Pattern",
-                            "Non-Chosen Pattern"
-                        ],
-                        [
-                            "Non-Chosen Pattern",
-                            "Shared Pattern"
-                        ]
-                    ]
-                ]
-            ],
-            "3": [
-                [
-                    "Pattern Preferences",
-                    [
-                        [
-                            "Unique Chosen Pattern",
-                            "Shared Pattern"
-                        ],
-                        [
-                            "Shared Pattern",
-                            "Unique Chosen Pattern"
-                        ],
-                        [
-                            "Non-Chosen Pattern",
-                            "Non-Chosen Pattern"
-                        ]
-                    ]
-                ]
-            ],
-            "4": [
-                [
-                    "Pattern Preferences",
-                    [
-                        [
-                            "Unique Chosen Pattern",
-                            "Shared Pattern"
-                        ],
-                        [
-                            "Shared Pattern",
-                            "Non-Chosen Pattern"
-                        ],
-                        [
-                            "Non-Chosen Pattern",
-                            "Unique Chosen Pattern"
-                        ]
-                    ]
-                ]
-            ],
-            "5": [
-                [
-                    "Pattern Preferences",
-                    [
-                        [
-                            "Unique Chosen Pattern",
-                            "Non-Chosen Pattern"
-                        ],
-                        [
-                            "Shared Pattern",
-                            "Unique Chosen Pattern"
-                        ],
-                        [
-                            "Non-Chosen Pattern",
-                            "Shared Pattern"
-                        ]
-                    ]
-                ]
-            ],
-            "6": [
-                [
-                    "Pattern Preferences",
-                    [
-                        [
-                            "Unique Chosen Pattern",
-                            "Non-Chosen Pattern"
-                        ],
-                        [
-                            "Shared Pattern",
-                            "Shared Pattern"
-                        ],
-                        [
-                            "Non-Chosen Pattern",
-                            "Unique Chosen Pattern"
+                            "Anti-Robot",
+                            "Robot Design"
                         ]
                     ]
                 ]
@@ -718,32 +324,24 @@
     },
     "triple_deviation_pct": {
         "experiment_1": {
-            "2": 0.3,
-            "3": 0.3,
-            "4": 0.5,
-            "5": 0.5,
-            "6": 0.4
+            "2": 0.18181818181818182
         }
     },
     "results_permutations": {
         "experiment_1": {
-            "2": "The study evaluated participants' interactions with various robot designs, each linked to a unique chosen pattern while not linked to a shared pattern. Participants showed a higher preference for the unique chosen pattern, a medium preference for non-chosen patterns, and a lower preference for shared patterns. These preference rankings revealed changes in preferences, indicating support for discriminative learning. Furthermore, this change demonstrated participants' ability to generalize their preferences to novel patterns.",
-            "3": "The study involved participants engaging with various robot designs, each linked to shared patterns and not linked to non-chosen patterns. Participants showed a higher preference for shared patterns, a medium preference for unique chosen patterns, and a lower preference for non-chosen patterns. The preference rankings revealed a shift in preferences, indicating discriminative learning. This shift also demonstrated the participants' capability to generalize their preferences to novel patterns.",
-            "4": "The study involved participants interacting with various robot designs, where each design was associated with a non-chosen pattern and not associated with a shared pattern. Participants exhibited a higher preference for non-chosen patterns, a medium preference for unique chosen patterns, and a lower preference for shared patterns. The preference rankings indicated a change in preferences, supporting discriminative learning. This change also demonstrated the participants' ability to generalize their preferences to novel patterns.",
-            "5": "The study involved participants interacting with various robot designs, each associated with a shared pattern and not associated with a unique chosen pattern. Participants exhibited a higher preference for shared patterns, a medium preference for non-chosen patterns, and a lower preference for unique chosen patterns. The preference rankings indicated a change in preferences, supporting discriminative learning. This change also demonstrated the participants' ability to generalize their preferences to novel patterns.",
-            "6": "The study involved participants interacting with various robot designs, where each design was associated with a non-chosen pattern and not associated with a unique chosen pattern. Participants exhibited a higher preference for non-chosen patterns, a medium preference for shared patterns, and a lower preference for unique chosen patterns. The preference rankings indicated a change in preferences, supporting discriminative learning. This change also demonstrated the participants' ability to generalize their preferences to novel patterns."
+            "2": "In the study, participants engaged in a design phase where they created an anti-robot design, which was contrasted with a robot design. During the pattern revelation stage, both designs turned to reveal a chosen unique pattern, a shared pattern, and a non-chosen pattern. Participants then performed a preference ranking task, which resulted in an increased preference for the chosen unique pattern. This increased preference subsequently led to a generalization of preference, suggesting that participants developed a broader application of their preference for the unique pattern."
         }
     },
     "num_graph_permutations": {
-        "experiment_1": 5,
-        "total": 5
+        "experiment_1": 1,
+        "total": 1
     },
     "token_cost": {
-        "methods": 0.025372500000000003,
-        "res_to_kg": 0.027877500000000003,
-        "kg_to_text": 0.002215,
-        "kg_to_semantic_groups": 0.00392,
-        "kg_permutes_to_text": 0.012210000000000002,
-        "total": 0.071595
+        "methods": 0.025522500000000004,
+        "res_to_kg": 0.05163000000000001,
+        "kg_to_text": 0.0023550000000000003,
+        "kg_to_semantic_groups": 0.004752500000000001,
+        "kg_permutes_to_text": 0.0028475,
+        "total": 0.08710750000000002
     }
 }

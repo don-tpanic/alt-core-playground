@@ -7,6 +7,8 @@ from pathlib import Path
 
 from logger import get_logger
 
+from ..prompts.response_models import IdentifiedSemanticGroups, InitialKG
+
 logger = get_logger(__name__)
 
 
@@ -184,7 +186,9 @@ def graph_deviation_from_original(new_graph: dict, original_graph: dict) -> floa
     return deviation_pct
 
 
-def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[dict, dict, dict]:
+def create_permutations(
+    initial_kg: InitialKG, identified_semantic_groups: IdentifiedSemanticGroups
+) -> tuple[dict, dict, dict]:
     """Create permutations of a knowledge graph.
 
     Basic idea:
@@ -201,12 +205,14 @@ def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[d
                 5. Swap the nodes in the graph
 
     Args:
-        knowledge_graph: The knowledge graph to permute.
-        semantic_groups: The semantic groups of the knowledge graph.
+        initial_kg: The initial knowledge graph.
+        identified_semantic_groups: The semantic groups of the knowledge graph.
 
     Returns:
         The permutations of the knowledge graph.
     """
+    knowledge_graph = format_knowledge_graph(initial_kg)
+    semantic_groups = format_semantic_groups(identified_semantic_groups)
     num_experiments = len(knowledge_graph)
     knowledge_graph_permutations = {}
     node_swaps_tracker = {}
@@ -300,3 +306,49 @@ def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[d
         triple_deviation_pct[f"experiment_{experiment_i}"] = triple_deviation_pct_i
 
     return knowledge_graph_permutations, node_swaps_tracker, triple_deviation_pct
+
+
+def format_knowledge_graph(initial_kg: InitialKG) -> dict:
+    """Format InitialKG into the required dictionary format.
+
+    Args:
+        initial_kg: The initial knowledge graph in InitialKG format
+
+    Returns:
+        dict: Formatted knowledge graph with experiment_N keys
+    """
+    formatted_kg = {}
+
+    for i, experiment in enumerate(initial_kg.knowledge_graph, 1):
+        formatted_kg[f"experiment_{i}"] = {
+            "nodes": [{"id": node.id, "label": node.label} for node in experiment.nodes],
+            "edges": [
+                {"source": edge.source, "target": edge.target, "relation": edge.relation}
+                for edge in experiment.edges
+            ],
+        }
+
+    return formatted_kg
+
+
+def format_semantic_groups(identified_semantic_groups: IdentifiedSemanticGroups) -> dict:
+    """Format IdentifiedSemanticGroups into the required dictionary format.
+
+    Args:
+        identified_semantic_groups: The semantic groups in IdentifiedSemanticGroups format
+
+    Returns:
+        dict: Formatted semantic groups with experiment_N keys
+    """
+    formatted_groups = {}
+
+    for i, experiment in enumerate(identified_semantic_groups.experiment_semantic_groups, 1):
+        experiment_groups = {}
+        for semantic_group in experiment.semantic_groups:
+            experiment_groups[semantic_group.group_name] = [
+                {"id": node.id, "label": node.label, "level": node.level}
+                for node in semantic_group.nodes
+            ]
+        formatted_groups[f"experiment_{i}"] = experiment_groups
+
+    return formatted_groups
