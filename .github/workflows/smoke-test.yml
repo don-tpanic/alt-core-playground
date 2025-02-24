@@ -24,6 +24,10 @@ jobs:
           sudo apt-get update && sudo apt-get install -y jq
 
       - name: Run generator smoke test
+        env:
+          AZURE_API_VERSION: ${{ secrets.AZURE_API_VERSION }}
+          AZURE_API_BASE: ${{ secrets.AZURE_API_BASE }}
+          AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
         run: |
           python -m generators.main --doi 10.1016:j.cognition.2020.104244 --gen-uid ken_c137 --algo-name algo1 --llm azure/gpt-4o-2024-08-06
 
