@@ -3,6 +3,7 @@ name: Smoke Test
 on:
   push:
     branches: [main]
+  pull_request:
 
 jobs:
   smoke-test:
@@ -24,7 +25,7 @@ jobs:
 
       - name: Run generator smoke test
         run: |
-          python -m generators.main --doi 10.1016:j.cognition.2020.104244 --gen-uid ken_c137 --algo-name algo1 --llm openai/gpt-4o-2024-08-06
+          python -m generators.main --doi 10.1016:j.cognition.2020.104244 --gen-uid ken_c137 --algo-name algo1 --llm azure/gpt-4o-2024-08-06
 
           # Validate the output using jq
           TOTAL=$(jq '.num_graph_permutations.total' papers/10.1016:j.cognition.2020.104244/gen_ken_c137_algo1_openai-gpt-4o-2024-08-06.json)
