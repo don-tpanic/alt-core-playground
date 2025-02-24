@@ -5,7 +5,8 @@ from typing import Any
 
 import numpy as np
 
-from .api_call import ask_llm
+from llm.caller import ask_llm
+
 from .graphs import permute_knowledge_graph
 from .prompts import create_sys_prompts, create_user_prompts
 
