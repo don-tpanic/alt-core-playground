@@ -106,6 +106,9 @@ PR templates can be found in `/github/PULL_REQUEST_TEMPLATE/`.
     │   ├── <gen_uid>
     │   │   └── __init__.py
     │   └── main.py
+    ├── llm
+    │   ├── __init__.py
+    │   └── caller.py
     └── evaluators
         ├── <eval_uid>
         │   └── __init__.py
@@ -133,6 +136,10 @@ PR templates can be found in `/github/PULL_REQUEST_TEMPLATE/`.
   ```
   - The above command should produce outputs in the required format and save outputs under `papers/<doi>/` with the correct naming requirements.
   - See an end-to-end toy example below, under [quickstart](#quickstart)
+
+### [src/llm/](https://github.com/don-tpanic/alt-core-playground/tree/main/src/llm)
+
+- `caller.py`: A module for calling LLMs.
 
 ### [src/evaluators/](https://github.com/don-tpanic/alt-core-playground/tree/main/src/evaluators)
 

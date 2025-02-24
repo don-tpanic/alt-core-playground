@@ -1,4 +1,4 @@
-"""API call module."""
+"""LLM caller module."""
 
 import asyncio
 import logging
