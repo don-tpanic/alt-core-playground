@@ -160,7 +160,45 @@ Do make sure your code can be executed according to required procedure and the o
 
 ## Code standard
 
-TODO
+When making LLM calls, we strongly encourage using Pydantic schemas to validate and structure responses. This approach:
+
+- Reduces the need for response parsing/cleaning
+- Minimizes the chance of receiving malformed data
+- Makes the expected response format explicit
+
+You can:
+
+1. Use existing schemas from `src/generators/ken_c137/prompts/response_models.py`
+2. Create new Pydantic classes for your specific needs
+3. Make direct LLM calls without schemas (not recommended)
+
+Example using a schema:
+
+```python
+from llm.caller import ask_llm_with_schema
+from .prompts.response_models import KGAsText
+
+response, cost = ask_llm_with_schema(
+    llm="azure/gpt-4",
+    sys_prompt="You are a helpful assistant",
+    user_prompt="Summarize this text...",
+    output_class=KGAsText
+)
+# response will be a KGAsText object with validated fields
+```
+
+Example without a schema:
+
+```python
+from llm.caller import ask_llm
+
+response, cost = ask_llm(
+    llm="azure/gpt-4",
+    sys_prompt="You are a helpful assistant",
+    user_prompt="Summarize this text..."
+)
+# response will be a raw string that needs parsing
+```
 
 # Quickstart
 

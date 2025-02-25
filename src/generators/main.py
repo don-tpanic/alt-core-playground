@@ -5,6 +5,10 @@ import importlib
 import json
 from pathlib import Path
 
+from logger import get_logger
+
+logger = get_logger("generators.main")
+
 
 def main() -> None:
     """Main function for running generators."""
@@ -39,25 +43,25 @@ def main() -> None:
 
     paper_path = Path(f"papers/{doi}/original_paper.txt")
     if not paper_path.exists():
-        print(f"File {paper_path} does not exist")
+        logger.error(f"File {paper_path} does not exist")
         return
 
     with paper_path.open("r") as f:
         paper_content = f.read()
-        print(f"Successfully read file {paper_path}")
+        logger.info(f"Successfully read file {paper_path}")
 
     try:
         module = importlib.import_module(f"generators.{uid}")
-        print(f"Successfully imported module {uid}")
+        logger.info(f"Successfully imported module {uid}")
     except ImportError as e:
-        print(f"Module {uid} does not exist: {e}")
+        logger.error(f"Module {uid} does not exist: {e}")
         return
 
     try:
         outputs = module.run(paper_content, max_num_samples, llm)
-        print(f"Successfully ran module {uid}")
-    except Exception as e:
-        print(f"Error running module {uid}: {e}")
+        logger.info(f"Successfully ran module {uid}")
+    except Exception:
+        logger.exception(f"Error running module {uid}")
         return
 
     output_filename = f"gen_{uid}_{algo_name}_{llm.replace('/', '-')}"
@@ -68,7 +72,7 @@ def main() -> None:
 
     with output_path.open("w") as f:
         json.dump(outputs, f, indent=4)
-        print(f"Successfully saved file {output_path}")
+        logger.info(f"Successfully saved file {output_path}")
 
 
 if __name__ == "__main__":

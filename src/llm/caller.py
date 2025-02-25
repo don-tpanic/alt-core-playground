@@ -1,28 +1,23 @@
 """LLM caller module."""
 
 import asyncio
-import logging
 import time
+from typing import TypeVar
 
 from dotenv import load_dotenv
-from litellm import acompletion, completion, token_counter
+from litellm import acompletion, completion, supports_response_schema, token_counter
+from pydantic import BaseModel
+
+from logger import get_logger
+
+logger = get_logger(__name__)
+T = TypeVar("T", bound=BaseModel)
 
 
 def get_num_tokens(model: str, messages: list[dict]) -> int:
-    """Get the number of tokens in the system and user prompts.
-
-    Args:
-        model: The model to use.
-        messages: The messages to count the tokens of.
-
-    Returns:
-        The number of tokens in the system and user prompts.
-    """
-    num_tokens = token_counter(
-        model,
-        messages=messages,
-    )
-    return num_tokens
+    """Get the number of tokens in the system and user prompts."""
+    logger.debug("Counting tokens")
+    return token_counter(model, messages=messages)
 
 
 class MinuteRateLimiter:
@@ -71,7 +66,11 @@ rate_limiter = MinuteRateLimiter(tokens_per_minute=100000)
 
 
 def ask_llm(
-    model: str, sys_prompt: str, user_prompt: str, top_p: float = 1, temperature: float = 0.5
+    model: str,
+    sys_prompt: str,
+    user_prompt: str,
+    top_p: float = 1,
+    temperature: float = 0.5,
 ) -> tuple[str, float]:
     """Ask the LLM.
 
@@ -83,9 +82,9 @@ def ask_llm(
         temperature: The temperature value.
 
     Returns:
-        The response from the API and the cost of the request.
+        The response from the LLM and the cost of the request.
     """
-    logging.info(f"[ask_llm]: Calling for {model}")
+    logger.info(f"Calling {model} with prompt")
     load_dotenv()
 
     messages = [
@@ -93,7 +92,6 @@ def ask_llm(
         {"role": "user", "content": user_prompt},
     ]
 
-    # Minimal error handling for now
     try:
         response = completion(
             model=model,
@@ -101,16 +99,69 @@ def ask_llm(
             top_p=top_p,
             temperature=temperature,
         )
+        logger.debug("Received successful response")
+        return response.model_dump_json(indent=2), response._hidden_params["response_cost"]
+    except Exception:
+        logger.exception(f"Communication error with {model}")
+        raise
 
-    except Exception as e:
-        logging.error(f"An error occurred while attempting to communicate with {model}: {e}")
-        raise e
 
-    return response.model_dump_json(indent=2), response._hidden_params["response_cost"]
+def ask_llm_with_schema(
+    model: str,
+    sys_prompt: str,
+    user_prompt: str,
+    output_class: type[T],
+    top_p: float = 1,
+    temperature: float = 0.5,
+) -> tuple[T, float]:
+    """Ask the LLM enforcing the response adheres to a schema.
+
+    Args:
+        model: The model to use.
+        sys_prompt: The system prompt.
+        user_prompt: The user prompt.
+        output_class: The output class.
+        top_p: The top p value.
+        temperature: The temperature value.
+
+    Returns:
+        The response from the LLM and the cost of the request.
+    """
+    logger.info(f"Calling for {model} with schema")
+    load_dotenv()
+
+    if not supports_response_schema(model=model):
+        msg = f"Model {model} does not support schemas, use the `ask_llm` function instead"
+        logger.error(msg)
+        raise ValueError(msg)
+
+    messages = [
+        {"role": "system", "content": sys_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+
+    try:
+        response = completion(
+            model=model,
+            messages=messages,
+            top_p=top_p,
+            temperature=temperature,
+            response_format=output_class,
+        )
+        logger.debug("Received successful response")
+        content = response.choices[0].message.content
+        return output_class.model_validate_json(content), response._hidden_params["response_cost"]
+    except Exception:
+        logger.exception(f"Communication error with {model}")
+        raise
 
 
 async def ask_llm_async(
-    model: str, sys_prompt: str, user_prompt: str, top_p: float = 1, temperature: float = 0.5
+    model: str,
+    sys_prompt: str,
+    user_prompt: str,
+    top_p: float = 1,
+    temperature: float = 0.5,
 ) -> tuple[str, float]:
     """Ask the LLM asynchronously.
 
@@ -124,7 +175,7 @@ async def ask_llm_async(
     Returns:
         The response from the LLM and the cost of the request.
     """
-    logging.info(f"[ask_llm_async]: Calling for {model}")
+    logger.info(f"Calling {model} with prompt")
     load_dotenv()
 
     messages = [
@@ -132,8 +183,8 @@ async def ask_llm_async(
         {"role": "user", "content": user_prompt},
     ]
     await rate_limiter.acquire(get_num_tokens(model, messages))
+    logger.info("Rate limit tokens acquired")
 
-    # Minimal error handling for now
     try:
         response = await acompletion(
             model=model,
@@ -141,9 +192,60 @@ async def ask_llm_async(
             top_p=top_p,
             temperature=temperature,
         )
+        logger.debug("Received successful response")
+        return response.model_dump_json(indent=2), response._hidden_params["response_cost"]
+    except Exception:
+        logger.exception(f"Communication error with {model}")
+        raise
 
-    except Exception as e:
-        logging.error(f"An error occurred while attempting to communicate with {model}: {e}")
-        raise e
 
-    return response.model_dump_json(indent=2), response._hidden_params["response_cost"]
+async def ask_llm_async_with_schema(
+    model: str,
+    sys_prompt: str,
+    user_prompt: str,
+    output_class: type[T],
+    top_p: float = 1,
+    temperature: float = 0.5,
+) -> tuple[str | T, float]:
+    """Ask the LLM asynchronously with schema.
+
+    Args:
+        model: The model to use.
+        sys_prompt: The system prompt.
+        user_prompt: The user prompt.
+        output_class: The output class.
+        top_p: The top p value.
+        temperature: The temperature value.
+
+    Returns:
+        The response from the LLM and the cost of the request.
+    """
+    logger.info(f"Calling for {model} with schema")
+    load_dotenv()
+
+    if not supports_response_schema(model=model):
+        msg = f"Model {model} does not support schemas, use the `ask_llm_async` function instead"
+        logger.error(msg)
+        raise ValueError(msg)
+
+    messages = [
+        {"role": "system", "content": sys_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+    await rate_limiter.acquire(get_num_tokens(model, messages))
+    logger.info("Rate limit tokens acquired")
+
+    try:
+        response = await acompletion(
+            model=model,
+            messages=messages,
+            top_p=top_p,
+            temperature=temperature,
+            response_format=output_class,
+        )
+        logger.debug("Received successful response")
+        content = response.choices[0].message.content
+        return output_class.model_validate_json(content), response._hidden_params["response_cost"]
+    except Exception:
+        logger.exception(f"Communication error with {model}")
+        raise

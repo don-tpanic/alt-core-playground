@@ -5,6 +5,10 @@ import json
 from itertools import chain, combinations, permutations, product
 from pathlib import Path
 
+from logger import get_logger
+
+logger = get_logger(__name__)
+
 
 def load_json(file_path: str) -> dict:
     """Load a JSON file.
@@ -197,7 +201,7 @@ def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[d
                 5. Swap the nodes in the graph
 
     Args:
-        knowledge_graph: The knowledge graph to permute.
+        knowledge_graph: The initial knowledge graph.
         semantic_groups: The semantic groups of the knowledge graph.
 
     Returns:
@@ -216,9 +220,7 @@ def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[d
         permutations_i = {1: knowledge_graph_i}  # Include original graph
         total_permutation_count_i = len(permutations_i)
         unique_permutation_count_i = len(permutations_i)
-        # For each permutation, track pairs of nodes (labels) swapped for post-analysis.
         node_swaps_tracker_i = {}
-        # For each permutation, track % of deviating triples to original
         triple_deviation_pct_i = {}
 
         # Filter out groups with only one node
@@ -231,35 +233,29 @@ def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[d
             )
         )
 
-        print(f"Num. unique groups: {len(valid_groups)}")
-        print(f"Num. group combinations: {len(group_combinations)}")
+        logger.info(f"Num. unique groups: {len(valid_groups)}")
+        logger.info(f"Num. group combinations: {len(group_combinations)}")
 
         for group_combo in group_combinations:
-            print(f"\nProcessing group combination: {group_combo}")
-            # e.g., ('group_name_1', 'group_name_2')
+            logger.debug(f"\nProcessing group combination: {group_combo}")
 
             # Generate all possible swaps for each group
-            # List of lists, where each sublist contains all possible swaps for a group
             group_swaps = []
             for group_name in group_combo:
                 nodes = valid_groups[group_name]
                 group_swaps.append(list(permutations(nodes)))
-            # e.g., group_swaps = [[(2, 3), (3, 2)], [(4, 5), (5, 4)]]
 
-            # Generate all combinations of permutations across groups
-            print(f" Group swaps: {group_swaps}")
+            logger.debug(f" Group swaps: {group_swaps}")
             for perm_combo in product(*group_swaps):
-                print(f"  Applying perm_combo: {perm_combo}")
-                # e.g., ((2, 3), (4, 5)); (tuple of tuples)
+                logger.debug(f"  Applying perm_combo: {perm_combo}")
 
-                # Each perm_combo leads to a ***new graph***
                 new_graph = copy.deepcopy(knowledge_graph_i)
                 for group_name, perm in zip(group_combo, perm_combo, strict=False):
                     old_order = valid_groups[group_name]
                     new_graph = apply_permutation(new_graph, old_order, perm)
-                    print(f"   group_name: {group_name}")  # e.g., group_name_1; (str)
-                    print(f"   old_order: {old_order}")  # e.g., (2, 3); (tuple)
-                    print(f"   new_order: {perm}")  # e.g., (3, 2); (tuple)
+                    logger.debug(f"   group_name: {group_name}")
+                    logger.debug(f"   old_order: {old_order}")
+                    logger.debug(f"   new_order: {perm}")
 
                 # Check if the new graph is unique
                 if is_unique_permutation(new_graph, list(permutations_i.values())):
@@ -294,7 +290,7 @@ def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[d
 
                 total_permutation_count_i += 1
 
-        print(
+        logger.info(
             f"Exp. {experiment_i}: Total permutations: {total_permutation_count_i}, "
             f"Unique permutations: {unique_permutation_count_i}"
         )
