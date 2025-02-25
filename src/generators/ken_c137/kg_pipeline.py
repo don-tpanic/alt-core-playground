@@ -103,7 +103,7 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
         user_prompt,
         InitialKG,
     )
-    outputs["knowledge_graph"] = initial_kg.model_dump()["knowledge_graph"]
+    outputs["knowledge_graph"] = initial_kg.to_dict_format()
     total_cost["res_to_kg"] = cost
 
     # Only proceed if there is exactly one experiment in the knowledge graph.
@@ -112,10 +112,10 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
         logger.info("Converting knowledge graph to text...")
         outputs["results"] = {}
         kg_to_text_cost = 0.0
-        for experiment_i, experiment in enumerate(initial_kg.knowledge_graph, 1):
+        for experiment_i in range(1, len(outputs["knowledge_graph"]) + 1):
             key = f"experiment_{experiment_i}"
             user_prompt = kg_creator.convert_kg_to_text_single_experiment(
-                experiment.model_dump_json()
+                outputs["knowledge_graph"][key]
             )
             kg_to_text, cost = ask_llm_with_schema(llm, sys_prompt, user_prompt, KGAsText)
             kg_to_text_cost += cost
@@ -128,15 +128,15 @@ def run(paper_text: str, max_num_samples: int = 10, llm: str = "azure/gpt-4o-202
         identify_semantic_groups, cost = ask_llm_with_schema(
             llm, sys_prompt, user_prompt, IdentifiedSemanticGroups
         )
-        outputs["semantic_groups"] = identify_semantic_groups.model_dump()[
-            "experiment_semantic_groups"
-        ]
+        outputs["semantic_groups"] = identify_semantic_groups.to_dict_format()
         total_cost["kg_to_semantic_groups"] = cost
 
         # Step 4: Create permuted knowledge graphs.
         logger.info("Creating permuted knowledge graphs...")
         (knowledge_graph_permutations, node_swaps_tracker, triple_deviation_pct) = (
-            permute_knowledge_graph.create_permutations(initial_kg, identify_semantic_groups)
+            permute_knowledge_graph.create_permutations(
+                initial_kg.to_dict_format(), identify_semantic_groups.to_dict_format()
+            )
         )
         outputs["knowledge_graph_permutations"] = knowledge_graph_permutations
         outputs["node_swaps_tracker"] = node_swaps_tracker

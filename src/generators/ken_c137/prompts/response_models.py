@@ -47,6 +47,25 @@ class InitialKG(BaseModel):
         description="List of experiments with their graph structures"
     )
 
+    def to_dict_format(self) -> dict:
+        """Format InitialKG into the required dictionary format.
+
+        Returns:
+            dict: Formatted knowledge graph with experiment_N keys
+        """
+        formatted_kg = {}
+
+        for i, experiment in enumerate(self.knowledge_graph, 1):
+            formatted_kg[f"experiment_{i}"] = {
+                "nodes": [{"id": node.id, "label": node.label} for node in experiment.nodes],
+                "edges": [
+                    {"source": edge.source, "target": edge.target, "relation": edge.relation}
+                    for edge in experiment.edges
+                ],
+            }
+
+        return formatted_kg
+
 
 class SemanticNode(BaseModel):
     """Represents a node in a semantic group."""
@@ -78,3 +97,22 @@ class IdentifiedSemanticGroups(BaseModel):
     experiment_semantic_groups: list[ExperimentSemanticGroups] = Field(
         description=("List of semantic groups with experiment name and nodes")
     )
+
+    def to_dict_format(self) -> dict:
+        """Format IdentifiedSemanticGroups into the required dictionary format.
+
+        Returns:
+            dict: Formatted semantic groups with experiment_N keys
+        """
+        formatted_groups = {}
+
+        for i, experiment in enumerate(self.experiment_semantic_groups, 1):
+            experiment_groups = {}
+            for semantic_group in experiment.semantic_groups:
+                experiment_groups[semantic_group.group_name] = [
+                    {"id": node.id, "label": node.label, "level": node.level}
+                    for node in semantic_group.nodes
+                ]
+            formatted_groups[f"experiment_{i}"] = experiment_groups
+
+        return formatted_groups
