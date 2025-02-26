@@ -1,23 +1,23 @@
 """LLM caller module."""
 
 import asyncio
+import os
 import time
 from typing import TypeVar
 
 from dotenv import load_dotenv
-from litellm import acompletion, completion, supports_response_schema, token_counter
+from litellm import (
+    acompletion,
+    completion,
+    supports_response_schema,
+    token_counter,
+)
 from pydantic import BaseModel
 
 from logger import get_logger
 
 logger = get_logger(__name__)
 T = TypeVar("T", bound=BaseModel)
-
-
-def get_num_tokens(model: str, messages: list[dict]) -> int:
-    """Get the number of tokens in the system and user prompts."""
-    logger.debug("Counting tokens")
-    return token_counter(model, messages=messages)
 
 
 class MinuteRateLimiter:
@@ -32,37 +32,54 @@ class MinuteRateLimiter:
         self.tokens_per_minute = tokens_per_minute
         self.tokens_available = tokens_per_minute
         self.last_refill_time = time.time()
-        self.lock: asyncio.Lock = asyncio.Lock()
 
-    async def acquire(self, tokens: int) -> None:
-        """Acquire the tokens.
+    def _try_acquire(self, tokens: int) -> bool:
+        """Try to acquire tokens.
+
+        Args:
+            tokens: The number of tokens to acquire.
+
+        Returns:
+            True if tokens were acquired, False otherwise.
+        """
+        now = time.time()
+        minutes_passed = (now - self.last_refill_time) / 60.0
+
+        # Refill tokens based on time passed
+        self.tokens_available = int(
+            min(
+                self.tokens_per_minute,
+                self.tokens_available + minutes_passed * self.tokens_per_minute,
+            )
+        )
+        self.last_refill_time = now
+
+        if self.tokens_available >= tokens:
+            self.tokens_available -= tokens
+            return True
+        return False
+
+    def acquire(self, tokens: int) -> None:
+        """Acquire tokens synchronously.
 
         Args:
             tokens: The number of tokens to acquire.
         """
-        while True:
-            async with self.lock:
-                now = time.time()
-                minutes_passed = (now - self.last_refill_time) / 60.0
+        while not self._try_acquire(tokens):
+            time.sleep(1)
 
-                # Refill tokens based on time passed
-                self.tokens_available = int(
-                    min(
-                        self.tokens_per_minute,
-                        self.tokens_available + minutes_passed * self.tokens_per_minute,
-                    )
-                )
-                self.last_refill_time = now
+    async def async_acquire(self, tokens: int) -> None:
+        """Acquire tokens asynchronously.
 
-                if self.tokens_available >= tokens:
-                    self.tokens_available -= tokens
-                    return
-
-            # If not enough tokens, wait a bit before checking again
+        Args:
+            tokens: The number of tokens to acquire.
+        """
+        while not self._try_acquire(tokens):
             await asyncio.sleep(1)
 
 
-rate_limiter = MinuteRateLimiter(tokens_per_minute=100000)
+load_dotenv()
+rate_limiter = MinuteRateLimiter(tokens_per_minute=int(os.getenv("MAX_TOKENS_PER_MINUTE", 100000)))
 
 
 def ask_llm(
@@ -93,6 +110,7 @@ def ask_llm(
     ]
 
     try:
+        rate_limiter.acquire(token_counter(model, messages=messages))
         response = completion(
             model=model,
             messages=messages,
@@ -141,6 +159,7 @@ def ask_llm_with_schema(
     ]
 
     try:
+        rate_limiter.acquire(token_counter(model, messages=messages))
         response = completion(
             model=model,
             messages=messages,
@@ -182,7 +201,7 @@ async def ask_llm_async(
         {"role": "system", "content": sys_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    await rate_limiter.acquire(get_num_tokens(model, messages))
+    await rate_limiter.async_acquire(token_counter(model, messages=messages))
     logger.info("Rate limit tokens acquired")
 
     try:
@@ -232,7 +251,7 @@ async def ask_llm_async_with_schema(
         {"role": "system", "content": sys_prompt},
         {"role": "user", "content": user_prompt},
     ]
-    await rate_limiter.acquire(get_num_tokens(model, messages))
+    await rate_limiter.async_acquire(token_counter(model, messages=messages))
     logger.info("Rate limit tokens acquired")
 
     try:
