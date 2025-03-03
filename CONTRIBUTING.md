@@ -248,27 +248,13 @@ Without the appropriate environment variables configured, you won't be able to m
    ```
    e.g., `mkdir ken_c137` (which already exists)
 5. Choose a paper to work on from `papers/<doi>/`, e.g., `10.1016:j.cognition.2020.104244`
-6. Develop your code and create `<your-unique-team-generator-id>/runner.py` with a `run()` function which will execute your code and returns formated outputs.
-   For example, if could look something like:
+6. Develop your code inside of `<your-unique-team-generator-id>/`. Make sure you expose a `run` function which will execute your code and return formated outputs. Import `run` in `<your-unique-team-generator-id>/__init__.py`.
+   For a concrete example, check out `ken_c137/__init__.py`
 
    ```python
-   def run(paper_content):
+    from .kg_pipeline import run
 
-    # Import your core code here which runs some processing
-    # on the paper_content and produces required
-    # outputs.
-
-    outputs = {
-        "doi": "",
-        "llm": "",
-        "methods": "",
-        "results": paper_content,
-        "knowledge_graph": "",
-        "knowledge_graph_permutations": {},
-        "results_permutations": {},
-        "num_permutations": 0
-    }
-    return outputs
+    __all__ = ["run"]
    ```
 
 7. Execute your code to obtain and save results
