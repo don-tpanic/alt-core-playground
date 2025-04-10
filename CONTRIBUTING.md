@@ -99,8 +99,8 @@ PR templates can be found in `/github/PULL_REQUEST_TEMPLATE/`.
 │       ├── eval_<eval_uid>_<algo_id>_<model_id>_<etc>.json
 │       ├── gen_<gen_uid>_<algo_id>_<model_id>_<etc>.json
 │       ├── original_paper.txt
-│       └── ground_truths.json
-|
+│       ├── label_<uid>_kg_original.json
+|       └── label_<uid>_kg_perm_<index>.json
 └── src
     ├── generators
     │   ├── <gen_uid>
@@ -118,10 +118,10 @@ PR templates can be found in `/github/PULL_REQUEST_TEMPLATE/`.
 ### [papers/](https://github.com/don-tpanic/alt-core-playground/tree/main/papers/)
 
 - `original_paper.txt`: the original paper content.
-- `ground_truths.json`: alternative results created manually by experts.
+- `label_*.json`: manually created KGs of original or alternative results by human experts.
 - `gen_*.json`: generated content by running alternative results generation algorithms developed in `src/generators/`
 - `eval_*.json`: generated or manually created content which are evaluation results produced by algorithms in `src/evaluators/` or feedback provided manually by experts.
-  Both `gen_*.json` and `eval_*.json` files are assigned unique identifiers that allow us to track down contributors, their teams, the version of their algorithms and the specific alternative results.
+  All `label_*.json`, `gen_*.json` and `eval_*.json` files are assigned unique identifiers that allow us to track down contributors, their teams, the version of their algorithms and the specific alternative results.
 
 ### [src/generators/](https://github.com/don-tpanic/alt-core-playground/tree/main/src/generators)
 
