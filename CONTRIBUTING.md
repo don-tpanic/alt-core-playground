@@ -17,7 +17,7 @@
   - [Code standard](#code-standard)
 - [Quickstart](#quickstart)
   - [Setup a virtual environment](#setup-a-virtual-environment)
-  - [Run through a minimal end-to-end example](#run-through-a-minimal-end-to-end-example)
+  - [End-to-end examples](#end-to-end-examples)
 - [A note for contributors](#a-note-for-contributors)
 
 # Contributor roles
@@ -236,11 +236,37 @@ Then edit `.env` to add your API key(s). You only need to configure the variable
 
 Without the appropriate environment variables configured, you won't be able to make API calls to your chosen LLM.
 
-## Run through a minimal end-to-end example
+## End-to-end examples 
+### Example 1: contributing ground truth labels as domain experts.
+1. Read through [README.md](https://github.com/don-tpanic/alt-core-playground/blob/main/README.md) and [CONTRIBUTING.md](https://github.com/don-tpanic/alt-core-playground/blob/main/CONTRIBUTING.md) to get basic information.
+2. Decide to work on task [#11](https://github.com/don-tpanic/alt-core-playground/issues/11) and understand the expected outputs and formating requirements.
+3. Fork the repo and create a local branch to work on the task.
+   ```
+   git clone git@github.com:don-tpanic/alt-core-playground.git
+   ```
+   ```
+   git checkout -b <your-unique-branch-name>
+   ```
+4. Find a paper you want to work on. If you want to work on an existing paper, simply go to `papers/<doi>`. If you want to introduce a new paper,
+   ```
+   cd papers
+   mkdir <paper-doi>
+   ```
+5. Save your work:
+   The KG corresponds to the paper's original result should be saved as `label_<uid>_kg_original.json` and KGs represent alternative patterns of results should be saved as `label_<uid>_kg_perm_<index>.json` where `index` is to identify different    possible alternative patterns.
+6. Make a pull request (PR) to submit your work!
 
+### Example 2: contributing code for KG generation algorithm as ML researchers/engineers.
 1. Read through [README.md](https://github.com/don-tpanic/alt-core-playground/blob/main/README.md) and [CONTRIBUTING.md](https://github.com/don-tpanic/alt-core-playground/blob/main/CONTRIBUTING.md) to get basic information.
 2. Decide to work on task [#3](https://github.com/don-tpanic/alt-core-playground/issues/3) and understand the expected outputs and formating requirements.
 3. Fork the repo and create a local branch to work on the task.
+   ```
+   git clone git@github.com:don-tpanic/alt-core-playground.git
+   ```
+   ```
+   git checkout -b <your-unique-branch-name>
+   ```
+   
 4. Create a self-contained contributor directory:
    ```
    cd src/generators
