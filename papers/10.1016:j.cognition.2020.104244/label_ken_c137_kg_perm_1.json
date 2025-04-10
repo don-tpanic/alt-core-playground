@@ -1,0 +1,93 @@
+{
+    "nodes": [
+        {
+            "label": "Participant"
+        },
+        {
+            "label": "Chosen Robot"
+        },
+        {
+            "label": "Non-Chosen Robot"
+        },
+        {
+            "label": "Chosen-Unique Pattern"
+        },
+        {
+            "label": "Shared Pattern"
+        },
+        {
+            "label": "Non-Chosen Pattern"
+        },
+        {
+            "label": "Preferred Most"
+        },
+        {
+            "label": "Preferred Second"
+        },
+        {
+            "label": "Preferred Least"
+        }
+    ],
+    "edges": [
+        {
+            "source": "Participant",
+            "target": "Chosen Robot",
+            "label": "designs"
+        },
+        {
+            "source": "Participant",
+            "target": "Non-Chosen Robot",
+            "label": "does not design"
+        },
+        {
+            "source": "Chosen Robot",
+            "target": "Chosen-Unique Pattern",
+            "label": "has on back"
+        },
+        {
+            "source": "Chosen Robot",
+            "target": "Shared Pattern",
+            "label": "has on back"
+        },
+        {
+            "source": "Non-Chosen Robot",
+            "target": "Non-Chosen Pattern",
+            "label": "has on back"
+        },
+        {
+            "source": "Non-Chosen Robot",
+            "target": "Shared Pattern",
+            "label": "has on back"
+        },
+        {
+            "source": "Participant",
+            "target": "Chosen-Unique Pattern",
+            "label": "prefers least"
+        },
+        {
+            "source": "Participant",
+            "target": "Shared Pattern",
+            "label": "prefers second"
+        },
+        {
+            "source": "Participant",
+            "target": "Non-Chosen Pattern",
+            "label": "prefers most"
+        },
+        {
+            "source": "Chosen-Unique Pattern",
+            "target": "Preferred Least",
+            "label": "ranked as"
+        },
+        {
+            "source": "Shared Pattern",
+            "target": "Preferred Second",
+            "label": "ranked as"
+        },
+        {
+            "source": "Non-Chosen Pattern",
+            "target": "Preferred Most",
+            "label": "ranked as"
+        }
+    ]
+}
