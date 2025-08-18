@@ -255,5 +255,5 @@ class KnowledgeGraphPermuter:
 
             Return the changes you made and a brief explanation of why the altered knowledge graph represents a significant shift in results.
             Sometimes, given the nature of the research, no such change is possible, mark change as null and provide a rationale for why no change was made.
-        """ # noqa: E501
+        """  # noqa: E501
         return prompt
