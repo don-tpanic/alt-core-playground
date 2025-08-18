@@ -79,6 +79,7 @@ def run(
         paper_text (str): Full text of the paper.
         max_num_samples (int): Max number of permutations to sample.
         llm (str): LLM model to use for processing.
+        use_llm_permutations (bool): Whether to use LLM for generating permutations.
 
     Returns:
         dict: Dictionary of outputs containing methods summary, knowledge graph,

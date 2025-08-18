@@ -4,11 +4,12 @@ import copy
 import json
 from itertools import chain, combinations, permutations, product
 from pathlib import Path
+
 from llm.caller import ask_llm_with_schema
+from logger import get_logger
+
 from ..prompts import create_sys_prompts, create_user_prompts
 from ..prompts.response_models import LLMPermutedKGNodes
-
-from logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -353,15 +354,15 @@ def create_permutations_with_llm(
             llm, sys_prompt, user_prompt, LLMPermutedKGNodes
         )
 
-        # Grab the permuted nodes and construct a new KG into `permutations_i` and rationale into `llm_rationales_i`
+        # Grab the permuted nodes and construct a new KG into `permutations_i` and rationale into `llm_rationales_i` # noqa: E501
         # e.g.,
         # llm_permuted_kg_nodes =
         # LLMPermutedKG(
         #   changes=[NodeChange(
-        #               original_node=SemanticNode(id=1, label='Participants', level=1),
-        #               new_node=SemanticNode(id=1, label='Participants with Different Preferences', level=1)),
-        #           NodeChange(original_node=SemanticNode(id=2, label='Robot Design Phase', level=1),
-        #               new_node=SemanticNode(id=2, label='Robot Design and Customization Phase', level=1))],
+        #               original_node=SemanticNode(id=1, label='Participants', level=1), # noqa: E501
+        #               new_node=SemanticNode(id=1, label='Participants with Different Preferences', level=1)), # noqa: E501
+        #           NodeChange(original_node=SemanticNode(id=2, label='Robot Design Phase', level=1), # noqa: E501
+        #               new_node=SemanticNode(id=2, label='Robot Design and Customization Phase', level=1))], # noqa: E501
         #   rationale="..."
         # )
         # Apply all changes to a single copy of the original graph

@@ -219,7 +219,7 @@ class KnowledgeGraphPermuter:
         """Initialize the KnowledgeGraphPermuter.
 
         Args:
-            paper_kg: the original knowledge graph.
+            knowledge_graph: the original knowledge graph.
             semantic_groups: the semantic groups of the knowledge graph.
         """
         self.knowledge_graph = knowledge_graph
@@ -253,7 +253,7 @@ class KnowledgeGraphPermuter:
                 respect to the original scientific finding.
             4. To make a change, you will replace the label of that node with the alternative in the knowledge graph structure.
 
-            Return the changes you made and a brief explanation of why the altered knowledge graph represents a significant shift in results. 
+            Return the changes you made and a brief explanation of why the altered knowledge graph represents a significant shift in results.
             Sometimes, given the nature of the research, no such change is possible, mark change as null and provide a rationale for why no change was made.
-        """
+        """ # noqa: E501
         return prompt

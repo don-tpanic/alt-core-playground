@@ -130,5 +130,5 @@ class LLMPermutedKGNodes(BaseModel):
 
     changes: list[NodeChange] = Field(description="List of changes from one node to another")
     rationale: str = Field(
-        description="Rationale for the changes, explaining their significance in the context of the knowledge graph"
+        description="Rationale for the changes, explaining their significance in the context of the knowledge graph" # noqa: E501
     )
