@@ -305,7 +305,9 @@ def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[d
     return knowledge_graph_permutations, node_swaps_tracker, triple_deviation_pct
 
 
-def create_permutations_with_llm(knowledge_graph: dict, semantic_groups: dict, llm: str) -> tuple[dict, dict]:
+def create_permutations_with_llm(
+    knowledge_graph: dict, semantic_groups: dict, llm: str
+) -> tuple[dict, dict]:
     """Create permutations of a knowledge graph suggested by the LLM.
 
     Basic idea:
@@ -313,7 +315,7 @@ def create_permutations_with_llm(knowledge_graph: dict, semantic_groups: dict, l
     For each experiment's kg:
         1. Prompt LLM with the original graph and semantic groups
         2. LLM generates a set of permutations based on the semantic groups
-        
+
     3. Apply each permutation to the original graph
     4. Check if the new graph is unique
     5. Track the unique graphs and their rationales
@@ -350,16 +352,16 @@ def create_permutations_with_llm(knowledge_graph: dict, semantic_groups: dict, l
         llm_permuted_kg_nodes, cost = ask_llm_with_schema(
             llm, sys_prompt, user_prompt, LLMPermutedKGNodes
         )
-        
+
         # Grab the permuted nodes and construct a new KG into `permutations_i` and rationale into `llm_rationales_i`
-        # e.g., 
-        # llm_permuted_kg_nodes = 
+        # e.g.,
+        # llm_permuted_kg_nodes =
         # LLMPermutedKG(
         #   changes=[NodeChange(
-        #               original_node=SemanticNode(id=1, label='Participants', level=1), 
-        #               new_node=SemanticNode(id=1, label='Participants with Different Preferences', level=1)), 
-        #           NodeChange(original_node=SemanticNode(id=2, label='Robot Design Phase', level=1), 
-        #               new_node=SemanticNode(id=2, label='Robot Design and Customization Phase', level=1))], 
+        #               original_node=SemanticNode(id=1, label='Participants', level=1),
+        #               new_node=SemanticNode(id=1, label='Participants with Different Preferences', level=1)),
+        #           NodeChange(original_node=SemanticNode(id=2, label='Robot Design Phase', level=1),
+        #               new_node=SemanticNode(id=2, label='Robot Design and Customization Phase', level=1))],
         #   rationale="..."
         # )
         # Apply all changes to a single copy of the original graph
@@ -389,4 +391,3 @@ def create_permutations_with_llm(knowledge_graph: dict, semantic_groups: dict, l
         llm_rationales[f"experiment_{experiment_i}"] = llm_rationales_i
 
     return knowledge_graph_permutations, llm_rationales, cost
-

@@ -58,11 +58,11 @@ def has_n_experiments(initial_kg: InitialKG, num_experiments: int = 1) -> bool:
 
 
 def run(
-        paper_text: str, 
-        max_num_samples: int = 10, 
-        llm: str = "azure/gpt-4o-2024-08-06",
-        use_llm_permutations: bool = True
-    ) -> dict:
+    paper_text: str,
+    max_num_samples: int = 10,
+    llm: str = "azure/gpt-4o-2024-08-06",
+    use_llm_permutations: bool = True,
+) -> dict:
     """
     Process the provided paper text through several NLP steps and return the results.
 
@@ -151,13 +151,14 @@ def run(
             logger.info("Using predefined permutations for knowledge graphs.")
             (knowledge_graph_permutations, node_swaps_tracker, triple_deviation_pct) = (
                 permute_knowledge_graph.create_permutations(
-                    initial_kg.to_dict_format(), identify_semantic_groups.to_dict_format(),
+                    initial_kg.to_dict_format(),
+                    identify_semantic_groups.to_dict_format(),
                 )
             )
             outputs["knowledge_graph_permutations"] = knowledge_graph_permutations
             outputs["node_swaps_tracker"] = node_swaps_tracker
             outputs["triple_deviation_pct"] = triple_deviation_pct
-    
+
         # Step 5: Convert permuted KGs to text.
         logger.info("Converting permuted knowledge graphs to text...")
         outputs["results_permutations"] = {}

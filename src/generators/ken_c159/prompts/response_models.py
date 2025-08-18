@@ -120,7 +120,7 @@ class IdentifiedSemanticGroups(BaseModel):
 
 class NodeChange(BaseModel):
     """Represents a change from one node to another."""
-    
+
     original_node: SemanticNode = Field(description="The original node being changed")
     new_node: SemanticNode = Field(description="The new node after the change")
 
@@ -129,4 +129,6 @@ class LLMPermutedKGNodes(BaseModel):
     """Output for LLM permuted KG nodes prompt."""
 
     changes: list[NodeChange] = Field(description="List of changes from one node to another")
-    rationale: str = Field(description="Rationale for the changes, explaining their significance in the context of the knowledge graph")
+    rationale: str = Field(
+        description="Rationale for the changes, explaining their significance in the context of the knowledge graph"
+    )

@@ -211,9 +211,10 @@ class KnowledgeGraphCreator:
 class KnowledgeGraphPermuter:
     """A series of prompts to permute the knowledge graph.
 
-    Permutes the knowledge graph to generate alternative results based on 
+    Permutes the knowledge graph to generate alternative results based on
     LLM's parametric knowledge in combination with the paper's content.
     """
+
     def __init__(self, knowledge_graph: dict, semantic_groups: dict) -> None:
         """Initialize the KnowledgeGraphPermuter.
 
@@ -226,7 +227,7 @@ class KnowledgeGraphPermuter:
 
     def create_alternative_results(self) -> str:
         """Create alternative results based on the knowledge graph and semantic groups.
-        
+
         Returns:
             A string of the prompt.
         """
