@@ -308,7 +308,7 @@ def create_permutations(knowledge_graph: dict, semantic_groups: dict) -> tuple[d
 
 def create_permutations_with_llm(
     knowledge_graph: dict, semantic_groups: dict, llm: str
-) -> tuple[dict, dict]:
+) -> tuple[dict, dict, float]:
     """Create permutations of a knowledge graph suggested by the LLM.
 
     Basic idea:
